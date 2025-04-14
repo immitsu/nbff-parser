@@ -97,6 +97,7 @@ const bookmarks = parse(html, { withId: true })
 ```
 
 </details>
+<br/>
 
 ### `flatParse`
 
@@ -138,6 +139,7 @@ const bookmarks = flatParse(html)
 ```
 
 </details>
+<br/>
 
 ### `customParse`
 
@@ -166,6 +168,7 @@ const bookmarks = customParse(html, handlers)
 ```
 
 [Type definition](./types/custom-parse.d.ts)
+<br/>
 
 ## Notice
 
