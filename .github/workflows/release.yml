@@ -29,7 +29,8 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: Configure NPM Auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Publish the package to NPM
         run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
