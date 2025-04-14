@@ -1,6 +1,7 @@
 .editorconfig
 .github/
 .gitignore
+.ideas*
 .prettierrc
 .size-limit.js
 test/
