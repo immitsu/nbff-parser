@@ -4,30 +4,42 @@ import { describe, test } from 'node:test'
 import { flatParse } from '../index.js'
 
 describe('flat-parse', () => {
-  test('bookmark format', () => {
+  describe('bookmark format', () => {
     const text = `
       <A HREF="https://www.wikipedia.org" ADD_DATE="1739910038" LAST_MODIFIED="1739910039" ICON="data:image/png;base64,..." PRIVATE="0" TAGS="edu,wiki">Wikipedia&nbsp;— The Free Encyclopedia</A>
     `
 
-    const result = flatParse(text)
+    const processed = {
+      add_date: 1739910038000,
+      folder: [],
+      href: 'https://www.wikipedia.org',
+      icon: 'data:image/png;base64,...',
+      last_modified: 1739910039000,
+      private: false,
+      tags: ['edu', 'wiki'],
+      title: 'Wikipedia&nbsp;— The Free Encyclopedia'
+    }
 
-    const expect = [
-      {
-        add_date: 1739910038000,
-        folder: [],
-        href: 'https://www.wikipedia.org',
-        icon: 'data:image/png;base64,...',
-        last_modified: 1739910039000,
-        private: false,
-        tags: ['edu', 'wiki'],
-        title: 'Wikipedia&nbsp;— The Free Encyclopedia'
-      }
-    ]
+    test('default', () => {
+      const result = flatParse(text)
+      const expect = [processed]
 
-    deepEqual(result, expect)
+      deepEqual(result, expect)
+    })
+
+    test('with excluded attrs', () => {
+      const result = flatParse(text, {
+        excludeAttrs: ['icon', 'TAGS']
+      })
+      // eslint-disable-next-line no-unused-vars
+      const { icon, tags, ...rest } = processed
+      const expect = [rest]
+
+      deepEqual(result, expect)
+    })
   })
 
-  test('folder format', () => {
+  describe('folder format', () => {
     const text = `
       <DT><H3 ADD_DATE="1739910037" LAST_MODIFIED="1739910038" PERSONAL_TOOLBAR_FOLDER="false">Edu</H3>
       <DL><p>
@@ -35,24 +47,41 @@ describe('flat-parse', () => {
       </DL><p>
     `
 
-    const result = flatParse(text)
+    const processed = {
+      folder: [
+        {
+          add_date: 1739910037000,
+          last_modified: 1739910038000,
+          personal_toolbar_folder: false,
+          title: 'Edu'
+        }
+      ],
+      href: 'https://www.wikipedia.org',
+      title: 'Wikipedia&nbsp;— The Free Encyclopedia'
+    }
 
-    const expect = [
-      {
-        folder: [
-          {
-            add_date: 1739910037000,
-            last_modified: 1739910038000,
-            personal_toolbar_folder: false,
-            title: 'Edu'
-          }
-        ],
-        href: 'https://www.wikipedia.org',
-        title: 'Wikipedia&nbsp;— The Free Encyclopedia'
-      }
-    ]
+    test('default', () => {
+      const result = flatParse(text)
+      const expect = [processed]
 
-    deepEqual(result, expect)
+      deepEqual(result, expect)
+    })
+
+    test('with excluded attrs', () => {
+      const result = flatParse(text, {
+        excludeAttrs: ['add_date', 'last_modified', 'personal_toolbar_folder']
+      })
+
+      const expect = [
+        {
+          folder: [{ title: 'Edu' }],
+          href: 'https://www.wikipedia.org',
+          title: 'Wikipedia&nbsp;— The Free Encyclopedia'
+        }
+      ]
+
+      deepEqual(result, expect)
+    })
   })
 
   test('nested folders', () => {

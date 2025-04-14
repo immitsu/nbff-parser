@@ -9,6 +9,6 @@ export default [
   {
     name: 'all',
     path: 'index.js',
-    limit: '736 B'
+    limit: '785 B'
   }
 ]

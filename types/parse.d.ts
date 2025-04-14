@@ -22,6 +22,8 @@ export type FolderAttrs = Partial<{
   unfiled_bookmarks_folder: boolean
 }>
 
+export type AllAttrKeys = keyof (BookmarkAttrs & FolderAttrs)
+
 export type Bookmark = BookmarkAttrs & {
   title: string
   description?: string
@@ -48,8 +50,17 @@ export type FolderWithId = WithId<Folder> & {
 export type ReturnParseWithId = Array<BookmarkWithId | FolderWithId>
 
 // Overload signatures.
-export function parse(text: string, options?: { withId: false }): ReturnParse
 export function parse(
   text: string,
-  options: { withId: true }
+  options?: Partial<{
+    excludeAttrs: AllAttrKeys[]
+    withId: false
+  }>
+): ReturnParse
+export function parse(
+  text: string,
+  options: {
+    excludeAttrs?: AllAttrKeys[]
+    withId: true
+  }
 ): ReturnParseWithId

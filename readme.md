@@ -2,11 +2,19 @@
 
 A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one.
 
-- **Small**. Between 305 and 736 bytes (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**. Between 305 and 792 bytes (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **ES modules** and **tree shaking** support.
 - **TypeScript** support.
 
 ---
+
+## Notice
+
+The Netscape Bookmark file format does not have an official standard, which requires to collect disparate information for type definitions. The information appears to have been compiled in this [article](https://github.com/FlyingWolFox/Netscape-Bookmarks-File-Parser/wiki/Netscape-Bookmarks-File-Format) from a similar Python project.
+
+The parser expects the HTML file content to be provided as a string.
+
+Attribute names are returned as is, but converted to lowercase.<br/>Attribute values are returned slightly modified.
 
 ## Install
 
@@ -18,6 +26,8 @@ npm i nbff-parser
 
 ### `parse`
 
+[Type definition](./types/parse.d.ts)
+
 Returns bookmarks in a tree-like format.
 
 ```js
@@ -25,8 +35,6 @@ import { parse } from 'nbff-parser'
 
 const bookmarks = parse(html)
 ```
-
-[Type definition](./types/parse.d.ts)
 
 <details>
 <summary>Result schema</summary>
@@ -55,15 +63,21 @@ const bookmarks = parse(html)
 </details>
 <br/>
 
-Also you can add `id` and `pid` to the bookmark object by enabling the corresponding option. These properties represent the path to the object.
+#### `options`
+
+##### `excludeAttrs: string[]`
+
+Removes the specified attributes from the final data to reduce its size. For instance, the `ICON`-attribute, typically represented as a string encoded in PNG/Base64, can consume a significant amount of space.
+
+##### `withId: boolean`
+
+You can add `id` and `pid` to the bookmark object by enabling the corresponding option. These properties represent the path to the object.
 
 ```js
 import { parse } from 'nbff-parser'
 
 const bookmarks = parse(html, { withId: true })
 ```
-
-[Type definition](./types/parse.d.ts)
 
 <details>
 <summary>Result schema</summary>
@@ -101,6 +115,8 @@ const bookmarks = parse(html, { withId: true })
 
 ### `flatParse`
 
+[Type definition](./types/flat-parse.d.ts)
+
 Returns a flat list of bookmarks, with each bookmark including a folder stack to indicate its location.
 
 ```js
@@ -108,8 +124,6 @@ import { flatParse } from 'nbff-parser'
 
 const bookmarks = flatParse(html)
 ```
-
-[Type definition](./types/flat-parse.d.ts)
 
 <details>
 <summary>Result schema</summary>
@@ -141,7 +155,17 @@ const bookmarks = flatParse(html)
 </details>
 <br/>
 
+#### `options`
+
+##### `excludeAttrs: string[]`
+
+Removes the specified attributes from the final data to reduce its size. For instance, the `ICON`-attribute, typically represented as a string encoded in PNG/Base64, can consume a significant amount of space.
+
+<br/>
+
 ### `customParse`
+
+[Type definition](./types/custom-parse.d.ts)
 
 Processes the input and triggers the appropriate handler when it encounters an attributed tag.
 
@@ -166,14 +190,3 @@ const handlers = {
 
 const bookmarks = customParse(html, handlers)
 ```
-
-[Type definition](./types/custom-parse.d.ts)
-<br/>
-
-## Notice
-
-The Netscape Bookmark file format does not have an official standard, which requires to collect disparate information for type definitions. The information appears to have been compiled in this [article](https://github.com/FlyingWolFox/Netscape-Bookmarks-File-Parser/wiki/Netscape-Bookmarks-File-Format) from a similar Python project.
-
-The parser expects the HTML file content to be provided as a string.
-
-Attribute names are returned as is, but converted to lowercase.<br/>Attribute values are returned slightly modified.

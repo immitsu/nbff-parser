@@ -1,4 +1,4 @@
-import type { Bookmark, Folder } from './parse.d.ts'
+import type { Bookmark, Folder, AllAttrKeys } from './parse.d.ts'
 
 export type FlatBookmark = Bookmark & {
   folder: Omit<Folder, 'items'>[]
@@ -6,4 +6,7 @@ export type FlatBookmark = Bookmark & {
 
 export type FlatBookmarks = FlatBookmark[]
 
-export function flatParse(text: string): FlatBookmarks
+export function flatParse(
+  text: string,
+  options?: { excludeAttrs: AllAttrKeys[] }
+): FlatBookmarks

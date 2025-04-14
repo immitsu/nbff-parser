@@ -41,6 +41,17 @@ describe('parse', () => {
       deepEqual(result, expect)
     })
 
+    test('with excluded attrs', () => {
+      const result = parse(text, {
+        excludeAttrs: ['icon', 'PREVIEWSIZE']
+      })
+      // eslint-disable-next-line no-unused-vars
+      const { icon, previewsize, ...rest } = processed
+      const expect = [rest]
+
+      deepEqual(result, expect)
+    })
+
     test('lower case', () => {
       const lower = `
         <a href="https://www.wikipedia.org" add_date="1739910037" last_modified="1739910038" last_visit="1739910039" icon="data:image/png;base64,..." icon_uri="" private="0" tags="edu,wikipedia" shortcuturl="wikipedia" webslice="false" previewsize="10 x 10" islivepreview="false" webslice="false" feed="false" feedurl="">Wikipedia&nbsp;— The Free Encyclopedia</a>
@@ -79,6 +90,18 @@ describe('parse', () => {
     test('with id', () => {
       const result = parse(text, { withId: true })
       const expect = [{ ...processed, id: '0' }]
+
+      deepEqual(result, expect)
+    })
+
+    test('with excluded attrs', () => {
+      const result = parse(text, {
+        excludeAttrs: ['personal_toolbar_folder', 'unfiled_bookmarks_folder']
+      })
+      // eslint-disable-next-line no-unused-vars
+      const { personal_toolbar_folder, unfiled_bookmarks_folder, ...rest } =
+        processed
+      const expect = [rest]
 
       deepEqual(result, expect)
     })
