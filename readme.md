@@ -6,15 +6,13 @@ A simple parser for the Netscape Bookmark file format, which is generated when e
 - **ES modules** and **tree shaking** support.
 - **TypeScript** support.
 
----
-
-## Notice
+<br/>
 
 The Netscape Bookmark file format does not have an official standard, which requires to collect disparate information for type definitions. The information appears to have been compiled in this [article](https://github.com/FlyingWolFox/Netscape-Bookmarks-File-Parser/wiki/Netscape-Bookmarks-File-Format) from a similar Python project.
 
 The parser expects the HTML file content to be provided as a string.
 
-Attribute names are returned as is, but converted to lowercase.<br/>Attribute values are returned slightly modified.
+Attribute names are returned as is, but converted to lowercase. Attribute values are returned slightly modified.
 
 ## Install
 
