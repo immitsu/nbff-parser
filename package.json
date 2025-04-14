@@ -1,0 +1,39 @@
+{
+  "name": "nbff-parser",
+  "version": "0.1.0",
+  "description": "A simple parser for the Netscape Bookmark file format",
+  "keywords": [
+    "bookmarks",
+    "parser",
+    "browser",
+    "netscape"
+  ],
+  "scripts": {
+    "test:js": "node --test test/*.js",
+    "test:lint": "eslint .",
+    "test:size": "size-limit",
+    "test:types": "tsc --noEmit test/*.types.ts",
+    "test": "pnpm run /^test:/"
+  },
+  "author": "Michael Tsulaya <metsulaya@gmail.com>",
+  "main": "index.js",
+  "sideEffects": false,
+  "type": "module",
+  "types": "index.d.ts",
+  "engines": {
+    "node": "^18.0.0 || >=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/immitsu/nbff-parser"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "eslint": "^9.24.0",
+    "prettier": "^3.5.3",
+    "size-limit": "^11.2.0",
+    "typescript": "^5.8.3"
+  }
+}
