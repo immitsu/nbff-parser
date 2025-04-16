@@ -1,8 +1,8 @@
 # nbff-parser
 
-A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one.
+A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one, and convert parsed data back into an HTML string.
 
-- **Small**. Between 305 and 792 bytes (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**. Between 0.3 and 1.25 kB bytes (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **ES modules** and **tree shaking** support.
 - **TypeScript** support.
 
@@ -187,4 +187,19 @@ const handlers = {
 }
 
 const bookmarks = customParse(html, handlers)
+```
+
+### `stringify`
+
+[Type definition](./types/stringify.d.ts)
+
+It converts the data obtained from the `parse` call into an HTML string.
+
+```js
+import { parse, stringify } from 'nbff-parser'
+
+const text = '..'
+const parsed = parse(html)
+
+const backToText = stringify(parsed[0])
 ```

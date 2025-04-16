@@ -7,8 +7,15 @@ export default [
     limit: '305 B'
   },
   {
+    name: 'stringify',
+    import: {
+      'index.js': '{ stringify }'
+    },
+    limit: '625 B'
+  },
+  {
     name: 'all',
     path: 'index.js',
-    limit: '785 B'
+    limit: '1251 kB'
   }
 ]
