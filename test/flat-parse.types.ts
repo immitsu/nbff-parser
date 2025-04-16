@@ -1,4 +1,4 @@
-import { FlatBookmark } from '../index.js'
+import { FlatBookmark, FlatBookmarkWithId } from '../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 
@@ -33,4 +33,15 @@ const bookmark: Required<FlatBookmark> = {
       title: 'wiki'
     }
   ]
+}
+
+const bookmarkWithId: Required<FlatBookmarkWithId> = {
+  ...bookmark,
+  folder: [
+    {
+      title: 'Bookmark',
+      id: 1
+    }
+  ],
+  id: 0
 }

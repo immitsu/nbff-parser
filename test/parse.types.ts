@@ -31,14 +31,24 @@ const folder: Required<Folder> = {
   add_date: 1739910037000,
   last_modified: 1739910038000,
   title: 'Wiki',
-  items: [],
+  items: [
+    {
+      title: 'Article'
+    }
+  ],
   personal_toolbar_folder: false,
   unfiled_bookmarks_folder: false
 }
 
 const folderWithId: Required<FolderWithId> = {
   ...folder,
-  items: [],
+  items: [
+    {
+      title: 'Article',
+      pid: '0.0',
+      id: '0.0.0'
+    }
+  ],
   pid: '0',
   id: '0.0'
 }

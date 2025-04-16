@@ -60,9 +60,27 @@ describe('flat-parse', () => {
       title: 'Wikipedia&nbsp;— The Free Encyclopedia'
     }
 
-    test('default', () => {
+    test('regular', () => {
       const result = flatParse(text)
       const expect = [processed]
+
+      deepEqual(result, expect)
+    })
+
+    test('with id', () => {
+      const result = flatParse(text, { withId: true })
+      const expect = [
+        {
+          ...processed,
+          id: 1,
+          folder: [
+            {
+              ...processed.folder[0],
+              id: 0
+            }
+          ]
+        }
+      ]
 
       deepEqual(result, expect)
     })
@@ -84,7 +102,7 @@ describe('flat-parse', () => {
     })
   })
 
-  test('nested folders', () => {
+  describe('nested folders', () => {
     const text = `
       <!DOCTYPE NETSCAPE-Bookmark-file-1>
       <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
@@ -112,85 +130,187 @@ describe('flat-parse', () => {
       </DL><p>
     `
 
-    const result = flatParse(text)
+    test('regular', () => {
+      const result = flatParse(text)
 
-    const expect = [
-      {
-        description:
-          'The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps.',
-        folder: [
-          {
-            title: 'Bookmarks'
-          }
-        ],
-        href: 'https://developer.mozilla.org',
-        title: 'MDN Web Docs'
-      },
-      {
-        description:
-          "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.",
-        folder: [
-          {
-            title: 'Bookmarks'
-          },
-          {
-            title: 'JavaScript'
-          },
-          {
-            title: 'Runtimes'
-          }
-        ],
-        href: 'https://nodejs.org',
-        title: 'Node.js — Run JavaScript Everywhere'
-      },
-      {
-        description:
-          "Deno features improved security, performance, and developer experience compared to its predecessor. It's a great time to upgrade your Node.js project to run on Deno.",
-        folder: [
-          {
-            title: 'Bookmarks'
-          },
-          {
-            title: 'JavaScript'
-          },
-          {
-            title: 'Runtimes'
-          }
-        ],
-        href: 'https://deno.com',
-        title: 'Deno, the next-generation JavaScript runtime'
-      },
-      {
-        description:
-          'Bundle, install, and run JavaScript & TypeScript — all in Bun. Bun is a new JavaScript runtime with a native bundler, transpiler, task runner, and npm client built-in.',
-        folder: [
-          {
-            title: 'Bookmarks'
-          },
-          {
-            title: 'JavaScript'
-          },
-          {
-            title: 'Runtimes'
-          }
-        ],
-        href: 'https://bun.sh',
-        title: 'Bun — A fast all-in-one JavaScript runtime'
-      },
-      {
-        folder: [
-          {
-            title: 'Bookmarks'
-          },
-          {
-            title: 'JavaScript'
-          }
-        ],
-        href: 'https://tc39.es',
-        title: 'TC39 - Specifying JavaScript.'
-      }
-    ]
+      const expect = [
+        {
+          description:
+            'The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps.',
+          folder: [
+            {
+              title: 'Bookmarks'
+            }
+          ],
+          href: 'https://developer.mozilla.org',
+          title: 'MDN Web Docs'
+        },
+        {
+          description:
+            "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.",
+          folder: [
+            {
+              title: 'Bookmarks'
+            },
+            {
+              title: 'JavaScript'
+            },
+            {
+              title: 'Runtimes'
+            }
+          ],
+          href: 'https://nodejs.org',
+          title: 'Node.js — Run JavaScript Everywhere'
+        },
+        {
+          description:
+            "Deno features improved security, performance, and developer experience compared to its predecessor. It's a great time to upgrade your Node.js project to run on Deno.",
+          folder: [
+            {
+              title: 'Bookmarks'
+            },
+            {
+              title: 'JavaScript'
+            },
+            {
+              title: 'Runtimes'
+            }
+          ],
+          href: 'https://deno.com',
+          title: 'Deno, the next-generation JavaScript runtime'
+        },
+        {
+          description:
+            'Bundle, install, and run JavaScript & TypeScript — all in Bun. Bun is a new JavaScript runtime with a native bundler, transpiler, task runner, and npm client built-in.',
+          folder: [
+            {
+              title: 'Bookmarks'
+            },
+            {
+              title: 'JavaScript'
+            },
+            {
+              title: 'Runtimes'
+            }
+          ],
+          href: 'https://bun.sh',
+          title: 'Bun — A fast all-in-one JavaScript runtime'
+        },
+        {
+          folder: [
+            {
+              title: 'Bookmarks'
+            },
+            {
+              title: 'JavaScript'
+            }
+          ],
+          href: 'https://tc39.es',
+          title: 'TC39 - Specifying JavaScript.'
+        }
+      ]
 
-    deepEqual(result, expect)
+      deepEqual(result, expect)
+    })
+
+    test('with id', () => {
+      const result = flatParse(text, { withId: true })
+
+      const expect = [
+        {
+          description:
+            'The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps.',
+          folder: [
+            {
+              id: 0,
+              title: 'Bookmarks'
+            }
+          ],
+          id: 1,
+          href: 'https://developer.mozilla.org',
+          title: 'MDN Web Docs'
+        },
+        {
+          description:
+            "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.",
+          folder: [
+            {
+              id: 0,
+              title: 'Bookmarks'
+            },
+            {
+              id: 2,
+              title: 'JavaScript'
+            },
+            {
+              id: 3,
+              title: 'Runtimes'
+            }
+          ],
+          id: 4,
+          href: 'https://nodejs.org',
+          title: 'Node.js — Run JavaScript Everywhere'
+        },
+        {
+          description:
+            "Deno features improved security, performance, and developer experience compared to its predecessor. It's a great time to upgrade your Node.js project to run on Deno.",
+          folder: [
+            {
+              id: 0,
+              title: 'Bookmarks'
+            },
+            {
+              id: 2,
+              title: 'JavaScript'
+            },
+            {
+              id: 3,
+              title: 'Runtimes'
+            }
+          ],
+          id: 5,
+          href: 'https://deno.com',
+          title: 'Deno, the next-generation JavaScript runtime'
+        },
+        {
+          description:
+            'Bundle, install, and run JavaScript & TypeScript — all in Bun. Bun is a new JavaScript runtime with a native bundler, transpiler, task runner, and npm client built-in.',
+          folder: [
+            {
+              id: 0,
+              title: 'Bookmarks'
+            },
+            {
+              id: 2,
+              title: 'JavaScript'
+            },
+            {
+              id: 3,
+              title: 'Runtimes'
+            }
+          ],
+          id: 6,
+          href: 'https://bun.sh',
+          title: 'Bun — A fast all-in-one JavaScript runtime'
+        },
+        {
+          folder: [
+            {
+              id: 0,
+              title: 'Bookmarks'
+            },
+            {
+              id: 2,
+              title: 'JavaScript'
+            }
+          ],
+          id: 7,
+          href: 'https://tc39.es',
+          title: 'TC39 - Specifying JavaScript.'
+        }
+      ]
+
+      deepEqual(result, expect)
+    })
   })
 })

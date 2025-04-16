@@ -2,7 +2,7 @@
 
 A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one, and convert parsed data back into an HTML string.
 
-- **Small**. Between 0.3 and 1.25 kB bytes (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**. Between 0.3 and 1.25 kB (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **ES modules** and **tree shaking** support.
 - **TypeScript** support.
 
@@ -159,6 +159,49 @@ const bookmarks = flatParse(html)
 
 Removes the specified attributes from the final data to reduce its size. For instance, the `ICON`-attribute, typically represented as a string encoded in PNG/Base64, can consume a significant amount of space.
 
+##### `withId: boolean`
+
+You can add `id` to the bookmark object by enabling the corresponding option. This property is an incrementally increasing number.
+
+```js
+import { flatParse } from 'nbff-parser'
+
+const bookmarks = flatParse(html, { withId: true })
+```
+
+<details>
+<summary>Result schema</summary>
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Bookmark",
+    "folder": [
+      {
+        "id": 0,
+        "title": "Folder"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Another Bookmark",
+    "folder": [
+      {
+        "id": 2,
+        "title": "Folder"
+      }
+      {
+        "id": 3,
+        "title": "Nested Folder",
+      },
+    ]
+  }
+]
+```
+
+</details>
 <br/>
 
 ### `customParse`
@@ -188,6 +231,8 @@ const handlers = {
 
 const bookmarks = customParse(html, handlers)
 ```
+
+<br/>
 
 ### `stringify`
 
