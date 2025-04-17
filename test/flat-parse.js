@@ -72,13 +72,13 @@ describe('flat-parse', () => {
       const expect = [
         {
           ...processed,
-          id: 1,
           folder: [
             {
               ...processed.folder[0],
               id: 0
             }
-          ]
+          ],
+          id: 1
         }
       ]
 
@@ -226,8 +226,8 @@ describe('flat-parse', () => {
               title: 'Bookmarks'
             }
           ],
-          id: 1,
           href: 'https://developer.mozilla.org',
+          id: 1,
           title: 'MDN Web Docs'
         },
         {
@@ -247,8 +247,8 @@ describe('flat-parse', () => {
               title: 'Runtimes'
             }
           ],
-          id: 4,
           href: 'https://nodejs.org',
+          id: 4,
           title: 'Node.js — Run JavaScript Everywhere'
         },
         {
@@ -268,8 +268,8 @@ describe('flat-parse', () => {
               title: 'Runtimes'
             }
           ],
-          id: 5,
           href: 'https://deno.com',
+          id: 5,
           title: 'Deno, the next-generation JavaScript runtime'
         },
         {
@@ -289,8 +289,8 @@ describe('flat-parse', () => {
               title: 'Runtimes'
             }
           ],
-          id: 6,
           href: 'https://bun.sh',
+          id: 6,
           title: 'Bun — A fast all-in-one JavaScript runtime'
         },
         {
@@ -304,8 +304,8 @@ describe('flat-parse', () => {
               title: 'JavaScript'
             }
           ],
-          id: 7,
           href: 'https://tc39.es',
+          id: 7,
           title: 'TC39 - Specifying JavaScript.'
         }
       ]

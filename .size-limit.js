@@ -1,21 +1,21 @@
 export default [
   {
-    name: 'customParse',
     import: {
       'index.js': '{ customParse }'
     },
-    limit: '305 B'
+    limit: '305 B',
+    name: 'customParse'
   },
   {
-    name: 'stringify',
     import: {
       'index.js': '{ stringify }'
     },
-    limit: '625 B'
+    limit: '625 B',
+    name: 'stringify'
   },
   {
+    limit: '1251 kB',
     name: 'all',
-    path: 'index.js',
-    limit: '1251 kB'
+    path: 'index.js'
   }
 ]
