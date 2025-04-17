@@ -9,7 +9,7 @@
     "netscape"
   ],
   "scripts": {
-    "test:js": "node --test test/*.js",
+    "test:js": "node --test test/*.spec.js",
     "test:lint": "eslint .",
     "test:size": "size-limit",
     "test:types": "tsc --noEmit test/*.types.ts",
