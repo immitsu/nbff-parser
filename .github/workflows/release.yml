@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -24,7 +26,8 @@ jobs:
 
       - name: Generate commit list
         run: |
-          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"- %s (%h)" >> commits.md
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          git log "$LATEST_TAG..HEAD" --pretty=format:"- %s (%h)" > commits.md
           cat commits.md
 
       - name: Create the release
