@@ -22,10 +22,17 @@ jobs:
         with:
           version: 10
 
+      - name: Generate commit list
+        run: |
+          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"- %s (%h)" >> commits.md
+          cat commits.md
+
       - name: Create the release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          name: Release ${{ github.ref_name }}
+          body_path: commits.md
           draft: false
           prerelease: false
 
