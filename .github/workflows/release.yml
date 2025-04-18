@@ -34,7 +34,7 @@ jobs:
             git log --pretty=format:"- %s (%h)" >> commits.md
           else
             echo "## Changes since $PREV_TAG" > commits.md
-            git log "$PREV_TAG..$CURRENT_TAG" --pretty=format:"- %s (%h)" >> commits.md
+            git log "$PREV_TAG..$CURRENT_TAG^" --pretty=format:"- %s (%h)" >> commits.md
           fi
 
           cat commits.md
