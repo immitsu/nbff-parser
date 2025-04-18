@@ -26,8 +26,17 @@ jobs:
 
       - name: Generate commit list
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          git log "$LATEST_TAG..HEAD" --pretty=format:"- %s (%h)" > commits.md
+          CURRENT_TAG=$(git describe --tags --abbrev=0)
+          PREV_TAG=$(git describe --tags --abbrev=0 "$CURRENT_TAG^" || echo "")
+
+          if [ -z "$PREV_TAG" ]; then
+            echo "## Initial Release" > commits.md
+            git log --pretty=format:"- %s (%h)" >> commits.md
+          else
+            echo "## Changes since $PREV_TAG" > commits.md
+            git log "$PREV_TAG..$CURRENT_TAG" --pretty=format:"- %s (%h)" >> commits.md
+          fi
+
           cat commits.md
 
       - name: Create the release
