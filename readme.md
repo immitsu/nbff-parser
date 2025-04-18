@@ -26,7 +26,7 @@ npm i nbff-parser
 
 [Type definition](./types/parse.d.ts)
 
-Returns bookmarks in a tree-like format.
+Returns bookmarks in a tree-like format, as they were in the file.
 
 ```js
 import { parse } from 'nbff-parser'
@@ -59,7 +59,6 @@ const bookmarks = parse(html)
 ```
 
 </details>
-<br/>
 
 #### `options`
 
@@ -69,7 +68,7 @@ Removes the specified attributes from the final data to reduce its size. For ins
 
 ##### `withId: boolean`
 
-You can add `id` and `pid` to the bookmark object by enabling the corresponding option. These properties represent the path to the object.
+Adds `id` and `pid` to the bookmark object. These properties represent the path to the object.
 
 ```js
 import { parse } from 'nbff-parser'
@@ -151,7 +150,6 @@ const bookmarks = flatParse(html)
 ```
 
 </details>
-<br/>
 
 #### `options`
 
@@ -161,7 +159,7 @@ Removes the specified attributes from the final data to reduce its size. For ins
 
 ##### `withId: boolean`
 
-You can add `id` to the bookmark object by enabling the corresponding option. This property is an incrementally increasing number.
+Adds `id` to the bookmark object. This property is an incrementally increasing number.
 
 ```js
 import { flatParse } from 'nbff-parser'
@@ -238,13 +236,13 @@ const bookmarks = customParse(html, handlers)
 
 [Type definition](./types/stringify.d.ts)
 
-It converts the data obtained from the `parse` call into an HTML string.
+Converts the data obtained from the `parse` call back to an HTML string.
 
 ```js
 import { parse, stringify } from 'nbff-parser'
 
-const text = '..'
+const html = '..'
 const parsed = parse(html)
 
-const backToText = stringify(parsed[0])
+const backToHtml = stringify(parsed[0])
 ```
