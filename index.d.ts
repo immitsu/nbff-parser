@@ -6,13 +6,15 @@ export {
   FolderWithId,
   ReturnParseWithId,
   parse
-} from './types/parse.js'
+} from './types/parse/parse.js'
 export {
   FlatBookmark,
   ReturnFlatParse,
   FlatBookmarkWithId,
   ReturnFlatParseWithId,
   flatParse
-} from './types/flat-parse.js'
-export * from './types/custom-parse.js'
-export * from './types/stringify.js'
+} from './types/parse/flat-parse.js'
+export { customParse } from './types/parse/custom-parse.js'
+
+export { stringify } from './types/stringify/stringify.js'
+export { flatStringify } from './types/stringify/flat-stringify.js'

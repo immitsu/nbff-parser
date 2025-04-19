@@ -1,4 +1,4 @@
-import { Bookmark, BookmarkWithId, Folder, FolderWithId } from '../index.js'
+import { Bookmark, BookmarkWithId, Folder, FolderWithId } from '../../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 

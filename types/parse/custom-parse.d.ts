@@ -1,4 +1,4 @@
-import type { BookmarkAttrs, FolderAttrs } from './parse.js'
+import type { BookmarkAttrs, FolderAttrs } from '../attrs.d.ts'
 
 interface Handlers {
   addBookmark: (title: string, attrs: BookmarkAttrs) => void

@@ -2,7 +2,7 @@
 
 A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one, and convert parsed data back into an HTML string.
 
-- **Small**. Between 0.3 and 1.25 kB (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**. Between 0.3 and 1.58 kB (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **ES modules** and **tree shaking** support.
 - **TypeScript** support.
 
@@ -114,7 +114,7 @@ const bookmarks = parse(html, { withId: true })
 
 [Type definition](./types/flat-parse.d.ts)
 
-Returns a flat list of bookmarks, with each bookmark including a folder stack to indicate its location.
+Returns a flat list of bookmarks, with each bookmark including a folder stack to indicate its location. Empty folders will not be included in the final data.
 
 ```js
 import { flatParse } from 'nbff-parser'
@@ -140,10 +140,10 @@ const bookmarks = flatParse(html)
     "folder": [
       {
         "title": "Folder"
-      }
-      {
-        "title": "Nested Folder",
       },
+      {
+        "title": "Nested Folder"
+      }
     ]
   }
 ]
@@ -241,8 +241,29 @@ Converts the data obtained from the `parse` call back to an HTML string.
 ```js
 import { parse, stringify } from 'nbff-parser'
 
-const html = '..'
+const html = '...'
 const parsed = parse(html)
 
 const backToHtml = stringify(parsed[0])
+// `html` and `backToHtml` are identical
+```
+
+<br/>
+
+### `flatStringify`
+
+[Type definition](./types/flat-stringify.d.ts)
+
+Converts the data obtained from the `flatParse` call back to an HTML string.
+
+We need to pass `{ withId: true }` to `flatParse` so that each folder has a unique identifier. In a hierarchical structure, the element’s position within the hierarchy would serve as its identifier.
+
+```js
+import { flatParse, flatStringify } from 'nbff-parser'
+
+const html = '...'
+const parsed = flatParse(html, { withId: true })
+
+const backToHtml = flatStringify(parsed)
+// `html` and `backToHtml` are identical
 ```

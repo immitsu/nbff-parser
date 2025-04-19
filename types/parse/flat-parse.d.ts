@@ -1,4 +1,5 @@
-import type { Bookmark, Folder, AllAttrKeys } from './parse.d.ts'
+import type { Bookmark, Folder } from './parse.d.ts'
+import type { AllAttrKeys } from '../attrs.d.ts'
 
 type FlatFolder = Omit<Folder, 'items'>
 

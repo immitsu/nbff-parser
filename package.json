@@ -9,10 +9,10 @@
     "netscape"
   ],
   "scripts": {
-    "test:js": "node --test test/*.spec.js",
+    "test:js": "node --test test/**/*.spec.js",
     "test:lint": "eslint .",
     "test:size": "size-limit",
-    "test:types": "tsc --noEmit test/*.types.ts",
+    "test:types": "tsc --noEmit test/**/*.types.ts",
     "test": "pnpm run /^test:/"
   },
   "author": "Michael Tsulaya <metsulaya@gmail.com>",

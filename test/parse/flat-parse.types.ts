@@ -1,4 +1,4 @@
-import { FlatBookmark, FlatBookmarkWithId } from '../index.js'
+import { FlatBookmark, FlatBookmarkWithId } from '../../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 
