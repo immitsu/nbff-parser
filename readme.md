@@ -24,7 +24,7 @@ npm i nbff-parser
 
 ### `parse`
 
-[Type definition](./types/parse.d.ts)
+[Type definition](./types/parse/parse.d.ts)
 
 Returns bookmarks in a tree-like format, as they were in the file.
 
@@ -112,7 +112,7 @@ const bookmarks = parse(html, { withId: true })
 
 ### `flatParse`
 
-[Type definition](./types/flat-parse.d.ts)
+[Type definition](./types/parse/flat-parse.d.ts)
 
 Returns a flat list of bookmarks, with each bookmark including a folder stack to indicate its location. Empty folders will not be included in the final data.
 
@@ -204,7 +204,7 @@ const bookmarks = flatParse(html, { withId: true })
 
 ### `customParse`
 
-[Type definition](./types/custom-parse.d.ts)
+[Type definition](./types/parse/custom-parse.d.ts)
 
 Processes the input and triggers the appropriate handler when it encounters an attributed tag.
 
@@ -234,7 +234,7 @@ const bookmarks = customParse(html, handlers)
 
 ### `stringify`
 
-[Type definition](./types/stringify.d.ts)
+[Type definition](./types/stringify/stringify.d.ts)
 
 Converts the data obtained from the `parse` call back to an HTML string.
 
@@ -252,7 +252,7 @@ const backToHtml = stringify(parsed[0])
 
 ### `flatStringify`
 
-[Type definition](./types/flat-stringify.d.ts)
+[Type definition](./types/stringify/flat-stringify.d.ts)
 
 Converts the data obtained from the `flatParse` call back to an HTML string.
 
