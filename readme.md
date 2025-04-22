@@ -1,18 +1,12 @@
 # nbff-parser
 
-A simple parser for the Netscape Bookmark file format, which is generated when exporting bookmarks from a browser. It can output data in several formats, including customizable one, and convert parsed data back into an HTML string.
+A simple parser for the Netscape Bookmark File Format (NBFF), commonly generated when exporting bookmarks from browsers. It supports parsing bookmarks into various formats — including customizable structures — and converting parsed data back into HTML.
 
-- **Small**. Between 0.3 and 1.58 kB (minified and brotlied). No dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
-- **ES modules** and **tree shaking** support.
-- **TypeScript** support.
+## Features
 
-<br/>
-
-The Netscape Bookmark file format does not have an official standard, which requires to collect disparate information for type definitions. The information appears to have been compiled in this [article](https://github.com/FlyingWolFox/Netscape-Bookmarks-File-Parser/wiki/Netscape-Bookmarks-File-Format) from a similar Python project.
-
-The parser expects the HTML file content to be provided as a string.
-
-Attribute names are returned as is, but converted to lowercase. Attribute values are returned slightly modified.
+- **Small**: 0.3 to 1.58 kB (minified + brotlied), no dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Modern**: Supports ES modules and tree shaking.
+- **TypeScript ready**: Full type definitions included.
 
 ## Install
 
@@ -22,11 +16,13 @@ npm i nbff-parser
 
 ## API
 
+The parser expects HTML-file content to be provided as a string.
+
 ### `parse`
 
 [Type definition](./types/parse/parse.d.ts)
 
-Returns bookmarks in a tree-like format, as they were in the file.
+Parses bookmarks into a nested tree structure.
 
 ```js
 import { parse } from 'nbff-parser'
@@ -64,15 +60,13 @@ const bookmarks = parse(html)
 
 ##### `excludeAttrs: string[]`
 
-Removes the specified attributes from the final data to reduce its size. For instance, the `ICON`-attribute, typically represented as a string encoded in PNG/Base64, can consume a significant amount of space.
+Exclude specified attributes from output (e.g., `ICON` to reduce size).
 
 ##### `withId: boolean`
 
-Adds `id` and `pid` to the bookmark object. These properties represent the path to the object.
+Adds hierarchical identifiers `id` and `pid` to each item.
 
 ```js
-import { parse } from 'nbff-parser'
-
 const bookmarks = parse(html, { withId: true })
 ```
 
@@ -108,13 +102,12 @@ const bookmarks = parse(html, { withId: true })
 ```
 
 </details>
-<br/>
 
 ### `flatParse`
 
 [Type definition](./types/parse/flat-parse.d.ts)
 
-Returns a flat list of bookmarks, with each bookmark including a folder stack to indicate its location. Empty folders will not be included in the final data.
+Parses bookmarks into a flat list, where each bookmark includes a folder stack representing its location path. Empty folders are omitted.
 
 ```js
 import { flatParse } from 'nbff-parser'
@@ -155,15 +148,13 @@ const bookmarks = flatParse(html)
 
 ##### `excludeAttrs: string[]`
 
-Removes the specified attributes from the final data to reduce its size. For instance, the `ICON`-attribute, typically represented as a string encoded in PNG/Base64, can consume a significant amount of space.
+Exclude specified attributes from output (e.g., `ICON` to reduce size).
 
 ##### `withId: boolean`
 
-Adds `id` to the bookmark object. This property is an incrementally increasing number.
+Adds incremental numeric `id` to items.
 
 ```js
-import { flatParse } from 'nbff-parser'
-
 const bookmarks = flatParse(html, { withId: true })
 ```
 
@@ -183,15 +174,15 @@ const bookmarks = flatParse(html, { withId: true })
     ]
   },
   {
-    "id": 4,
+    "id": 3,
     "title": "Another Bookmark",
     "folder": [
       {
-        "id": 2,
+        "id": 0,
         "title": "Folder"
       }
       {
-        "id": 3,
+        "id": 2,
         "title": "Nested Folder",
       },
     ]
@@ -200,15 +191,16 @@ const bookmarks = flatParse(html, { withId: true })
 ```
 
 </details>
-<br/>
 
 ### `customParse`
 
 [Type definition](./types/parse/custom-parse.d.ts)
 
-Processes the input and triggers the appropriate handler when it encounters an attributed tag.
+Provides fine-grained control by allowing you to define handlers for bookmark elements during parsing.
 
-This parser variant can be used to develop custom logic or structures. The methods described above rely on it internally.
+Use this to build custom data structures or implement custom logic.
+
+The methods described above rely on it internally.
 
 Required handlers:
 
@@ -230,40 +222,45 @@ const handlers = {
 const bookmarks = customParse(html, handlers)
 ```
 
-<br/>
-
 ### `stringify`
 
 [Type definition](./types/stringify/stringify.d.ts)
 
-Converts the data obtained from the `parse` call back to an HTML string.
+Converts the parsed tree structure (from `parse`) back into an HTML string.
 
 ```js
 import { parse, stringify } from 'nbff-parser'
 
-const html = '...'
 const parsed = parse(html)
+const rootFolder = parsed[0]
 
-const backToHtml = stringify(parsed[0])
-// `html` and `backToHtml` are identical
+const backToHtml = stringify(rootFolder)
+// `backToHtml` matches the original `html`
 ```
-
-<br/>
 
 ### `flatStringify`
 
 [Type definition](./types/stringify/flat-stringify.d.ts)
 
-Converts the data obtained from the `flatParse` call back to an HTML string.
+Converts the flat list (from `flatParse`) back into an HTML string.
 
-We need to pass `{ withId: true }` to `flatParse` so that each folder has a unique identifier. In a hierarchical structure, the element’s position within the hierarchy would serve as its identifier.
+> It requires using `flatParse` with `{ withId: true }` to ensure unique item IDs.
 
 ```js
 import { flatParse, flatStringify } from 'nbff-parser'
 
-const html = '...'
 const parsed = flatParse(html, { withId: true })
 
 const backToHtml = flatStringify(parsed)
-// `html` and `backToHtml` are identical
+// `backToHtml` matches the original `html`
 ```
+
+## Attribute Handling
+
+- Attribute names are returned lowercased.
+- Attribute values may be slightly normalized.
+- See detailed attribute types [here](./types/attrs.d.ts).
+
+## Acknowledgments
+
+- [Netscape Bookmark File Format Wiki](https://github.com/FlyingWolFox/Netscape-Bookmarks-File-Parser/wiki/Netscape-Bookmarks-File-Format) for the collected info about NBFF.
