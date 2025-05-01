@@ -7,10 +7,8 @@ export type Bookmark = BookmarkAttrs & {
 
 export type Folder = FolderAttrs & {
   title: string
-  items: ReturnParse
+  items: (Folder | Bookmark)[]
 }
-
-export type ReturnParse = Array<Bookmark | Folder>
 
 type WithId<T> = T & {
   id: string
@@ -19,11 +17,11 @@ type WithId<T> = T & {
 
 export type BookmarkWithId = WithId<Bookmark>
 
-export type FolderWithId = WithId<Folder> & {
-  items: ReturnParseWithId
-}
-
-export type ReturnParseWithId = Array<BookmarkWithId | FolderWithId>
+export type FolderWithId = WithId<
+  Omit<Folder, 'items'> & {
+    items: (FolderWithId | BookmarkWithId)[]
+  }
+>
 
 // Overload signatures.
 export function parse(
@@ -32,11 +30,11 @@ export function parse(
     excludeAttrs: AllAttrKeys[]
     withId: false
   }>
-): ReturnParse
+): Folder
 export function parse(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
   }
-): ReturnParseWithId
+): FolderWithId

@@ -34,6 +34,10 @@ const folder: Required<Folder> = {
   items: [
     {
       title: 'Article'
+    },
+    {
+      title: 'Nested folder',
+      items: []
     }
   ],
   personal_toolbar_folder: false,
@@ -47,6 +51,12 @@ const folderWithId: Required<FolderWithId> = {
       title: 'Article',
       pid: '0.0',
       id: '0.0.0'
+    },
+    {
+      title: 'Nested folder',
+      pid: '0.0',
+      id: '0.0.1',
+      items: []
     }
   ],
   pid: '0',

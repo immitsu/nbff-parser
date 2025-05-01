@@ -7,15 +7,13 @@ export type FlatBookmark = Bookmark & {
   folder: FlatFolder[]
 }
 
-export type ReturnFlatParse = FlatBookmark[]
-
 type WithId<T> = T & { id: number }
 
 export type FlatBookmarkWithId = WithId<
-  FlatBookmark & { folder: WithId<FlatFolder>[] }
+  Bookmark & {
+    folder: WithId<FlatFolder>[]
+  }
 >
-
-export type ReturnFlatParseWithId = FlatBookmarkWithId[]
 
 // Overload signatures.
 export function flatParse(
@@ -24,11 +22,11 @@ export function flatParse(
     excludeAttrs: AllAttrKeys[]
     withId: false
   }>
-): ReturnFlatParse
+): FlatBookmark[]
 export function flatParse(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
   }
-): ReturnFlatParseWithId
+): FlatBookmarkWithId[]
