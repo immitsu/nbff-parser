@@ -10,18 +10,18 @@ export default [
     import: {
       'index.js': '{ flatStringify }'
     },
-    limit: '922 B',
+    limit: '911 B',
     name: 'flatStringify'
   },
   {
     import: {
       'index.js': '{ stringify }'
     },
-    limit: '634 B',
+    limit: '626 B',
     name: 'stringify'
   },
   {
-    limit: '1.525 kB',
+    limit: '1.51 kB',
     name: 'all',
     path: 'index.js'
   }

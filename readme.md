@@ -228,9 +228,8 @@ Converts the parsed tree structure (from `parse`) back into an HTML string.
 import { parse, stringify } from 'nbff-parser'
 
 const parsed = parse(html)
-
-const backToHtml = stringify(parsed)
-// `backToHtml` matches the original `html`
+const stringified = stringify(parsed)
+// `stringified` matches the original `html`
 ```
 
 ### `flatStringify`
@@ -245,9 +244,8 @@ Converts the flat list (from `flatParse`) back into an HTML string.
 import { flatParse, flatStringify } from 'nbff-parser'
 
 const parsed = flatParse(html, { withId: true })
-
-const backToHtml = flatStringify(parsed)
-// `backToHtml` matches the original `html`
+const stringified = flatStringify(parsed)
+// `stringified` matches the original `html`
 ```
 
 ## Attribute Handling

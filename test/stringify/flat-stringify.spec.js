@@ -18,6 +18,6 @@ describe('flat-stringify', () => {
     throws(() => {
       const parsed = flatParse(initial)
       flatStringify(parsed)
-    }, /^error: root folder with id not found.$/i)
+    }, /^error: root folder requires an identifier$/i)
   })
 })
