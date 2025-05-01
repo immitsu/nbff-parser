@@ -26,15 +26,15 @@ jobs:
 
       - name: Generate commit list
         run: |
-          CURRENT_TAG=$(git describe --tags --abbrev=0)
-          PREV_TAG=$(git describe --tags --abbrev=0 "$CURRENT_TAG^" || echo "")
+          CURR_TAG=$(git describe --tags --abbrev=0)
+          PREV_TAG=$(git describe --tags --abbrev=0 "$CURR_TAG^" || echo "")
 
           if [ -z "$PREV_TAG" ]; then
-            echo "## Initial Release" > commits.md
+            echo "#### Initial Release" > commits.md
             git log --pretty=format:"- %s (%h)" >> commits.md
           else
-            echo "## Changes since $PREV_TAG" > commits.md
-            git log "$PREV_TAG..$CURRENT_TAG^" --pretty=format:"- %s (%h)" >> commits.md
+            echo "#### Changes since $PREV_TAG" > commits.md
+            git log "$PREV_TAG..$CURR_TAG^" --pretty=format:"- %s (%h)" >> commits.md
           fi
 
           cat commits.md
@@ -43,7 +43,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Release ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body_path: commits.md
           draft: false
           prerelease: false
