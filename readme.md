@@ -16,7 +16,7 @@ npm i nbff-parser
 
 ## API
 
-The parser expects HTML-file content to be provided as a string.
+The parser expects HTML file content to be provided as a string.
 
 ### `parse`
 
@@ -58,7 +58,7 @@ const bookmarks = parse(html)
 
 ##### `excludeAttrs: string[]`
 
-Exclude specified attributes from output (e.g., `ICON` to reduce size).
+Exclude specified attributes from output.
 
 ##### `withId: boolean`
 
@@ -144,7 +144,7 @@ const bookmarks = flatParse(html)
 
 ##### `excludeAttrs: string[]`
 
-Exclude specified attributes from output (e.g., `ICON` to reduce size).
+Exclude specified attributes from output.
 
 ##### `withId: boolean`
 
@@ -198,13 +198,6 @@ Use this to build custom data structures or implement custom logic.
 
 The methods described above rely on it internally.
 
-Required handlers:
-
-- `addBookmark`
-- `describeBookmark`
-- `openFolder`
-- `closeFolder`
-
 ```js
 import { customParse } from 'nbff-parser'
 
@@ -222,7 +215,7 @@ const bookmarks = customParse(html, handlers)
 
 [Type definition](./types/stringify/stringify.d.ts)
 
-Converts the parsed tree structure (from `parse`) back into an HTML string.
+Converts the parsed tree structure from `parse` back into an HTML string.
 
 ```js
 import { parse, stringify } from 'nbff-parser'
@@ -236,7 +229,7 @@ const stringified = stringify(parsed)
 
 [Type definition](./types/stringify/flat-stringify.d.ts)
 
-Converts the flat list (from `flatParse`) back into an HTML string.
+Converts the flat list from `flatParse` back into an HTML string.
 
 > It requires using `flatParse` with `{ withId: true }` to ensure unique item IDs.
 
