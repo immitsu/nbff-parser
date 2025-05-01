@@ -2,7 +2,7 @@ import type { BookmarkAttrs, FolderAttrs } from '../attrs.d.ts'
 
 interface Handlers {
   addBookmark: (title: string, attrs: BookmarkAttrs) => void
-  addBookmarkDescription: (description: string) => void
+  describeBookmark: (description: string) => void
   closeFolder: () => void
   openFolder: (title: string, attrs: FolderAttrs) => void
 }

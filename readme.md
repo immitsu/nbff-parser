@@ -205,7 +205,7 @@ The methods described above rely on it internally.
 Required handlers:
 
 - `addBookmark`
-- `addBookmarkDescription`
+- `describeBookmark`
 - `openFolder`
 - `closeFolder`
 
@@ -214,7 +214,7 @@ import { customParse } from 'nbff-parser'
 
 const handlers = {
   addBookmark,
-  addBookmarkDescription,
+  describeBookmark,
   openFolder,
   closeFolder
 }
