@@ -3,7 +3,7 @@ export default [
     import: {
       'index.js': '{ customParse }'
     },
-    limit: '309 B',
+    limit: '280 B',
     name: 'customParse'
   },
   {
@@ -21,7 +21,7 @@ export default [
     name: 'stringify'
   },
   {
-    limit: '1.59 kB',
+    limit: '1.55 kB',
     name: 'all',
     path: 'index.js'
   }
