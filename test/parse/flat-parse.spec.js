@@ -3,109 +3,81 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { flatParse } from '../../index.js'
-import { BOOKMARK, FOLDER } from '../fragments.js'
-import { readFileRelative } from '../utils.js'
+import { fragment } from '../fragment.js'
+import { readFile } from '../utils.js'
 
 describe('flat-parse', () => {
-  describe('fragments', () => {
-    describe('BOOKMARK', () => {
-      const result = {
-        add_date: 1739910037000,
-        feed: false,
-        feedurl: '',
-        folder: [],
-        href: 'https://www.wikipedia.org',
-        icon: 'data:image/png;base64,...',
-        icon_uri: '',
-        islivepreview: false,
-        last_modified: 1739910038000,
-        last_visit: 1739910039000,
-        previewsize: { h: 10, w: 10 },
-        private: false,
-        shortcuturl: 'wikipedia',
-        tags: ['edu', 'wikipedia'],
-        title: 'Wikipedia&nbsp;— The Free Encyclopedia',
-        webslice: false
-      }
+  describe('fragment', () => {
+    const result = {
+      add_date: 1739910037000,
+      feed: false,
+      feedurl: '',
+      folder: [
+        {
+          add_date: 1739910037000,
+          last_modified: 1739910038000,
+          personal_toolbar_folder: false,
+          title: 'Edu',
+          unfiled_bookmarks_folder: true
+        }
+      ],
+      href: 'https://www.wikipedia.org',
+      icon: 'data:image/png;base64,...',
+      icon_uri: '',
+      islivepreview: false,
+      last_modified: 1739910038000,
+      last_visit: 1739910039000,
+      previewsize: { h: 10, w: 10 },
+      private: false,
+      shortcuturl: 'wikipedia',
+      tags: ['edu', 'wikipedia'],
+      title: 'Wikipedia&nbsp;— The Free Encyclopedia',
+      webslice: false
+    }
 
-      test('default', () => {
-        const actual = flatParse(BOOKMARK)
-        const expected = [result]
+    test('default', () => {
+      const actual = flatParse(fragment)
+      const expected = [result]
 
-        deepEqual(actual, expected)
-      })
-
-      test('with excluded attrs', () => {
-        const excludeAttrs = ['icon', 'TAGS']
-
-        const { icon, tags, ...anotherResult } = result
-
-        const actual = flatParse(BOOKMARK, { excludeAttrs })
-        const expected = [anotherResult]
-
-        deepEqual(actual, expected)
-      })
+      deepEqual(actual, expected)
     })
 
-    describe('FOLDER', () => {
-      const result = {
-        folder: [
-          {
-            add_date: 1739910037000,
-            last_modified: 1739910038000,
-            personal_toolbar_folder: false,
-            title: 'JavaScript',
-            unfiled_bookmarks_folder: true
-          }
-        ],
-        href: 'https://www.wikipedia.org',
-        title: 'Wikipedia'
+    test('with id', () => {
+      const anotherResult = {
+        ...result,
+        folder: [{ ...result.folder[0], id: 0 }],
+        id: 1
       }
 
-      test('default', () => {
-        const actual = flatParse(FOLDER)
-        const expected = [result]
+      const actual = flatParse(fragment, { withId: true })
+      const expected = [anotherResult]
 
-        deepEqual(actual, expected)
-      })
+      deepEqual(actual, expected)
+    })
 
-      test('with id', () => {
-        const anotherResult = {
-          ...result,
-          folder: [{ ...result.folder[0], id: 0 }],
-          id: 1
-        }
+    test('with excluded attrs', () => {
+      const excludeAttrs = [
+        'personal_toolbar_folder',
+        'unfiled_bookmarks_folder'
+      ]
 
-        const actual = flatParse(FOLDER, { withId: true })
-        const expected = [anotherResult]
+      const {
+        personal_toolbar_folder,
+        unfiled_bookmarks_folder,
+        ...anotherFolder
+      } = result.folder[0]
 
-        deepEqual(actual, expected)
-      })
+      const anotherResult = { ...result, folder: [anotherFolder] }
 
-      test('with excluded attrs', () => {
-        const excludeAttrs = [
-          'personal_toolbar_folder',
-          'unfiled_bookmarks_folder'
-        ]
+      const actual = flatParse(fragment, { excludeAttrs })
+      const expected = [anotherResult]
 
-        const {
-          personal_toolbar_folder,
-          unfiled_bookmarks_folder,
-          ...anotherFolder
-        } = result.folder[0]
-
-        const anotherResult = { ...result, folder: [anotherFolder] }
-
-        const actual = flatParse(FOLDER, { excludeAttrs })
-        const expected = [anotherResult]
-
-        deepEqual(actual, expected)
-      })
+      deepEqual(actual, expected)
     })
   })
 
   describe('bookmarks-1.html', () => {
-    const initial = readFileRelative('./bookmarks-1.html')
+    const initial = readFile('./bookmarks-1.html')
 
     test('default', () => {
       const actual = flatParse(initial)

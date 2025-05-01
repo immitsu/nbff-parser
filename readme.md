@@ -4,7 +4,7 @@ A simple parser for the Netscape Bookmark File Format (NBFF), commonly generated
 
 ## Features
 
-- **Small**: 0.3 to 1.58 kB (minified + brotlied), no dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**: 0.3 to 1.5 kB (minified + brotlied), no dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **Modern**: Supports ES modules and tree shaking.
 - **TypeScript ready**: Full type definitions included.
 
@@ -34,24 +34,22 @@ const bookmarks = parse(html)
 <summary>Result schema</summary>
 
 ```json
-[
-  {
-    "title": "Folder",
-    "items": [
-      {
-        "title": "Bookmark"
-      },
-      {
-        "title": "Nested Folder",
-        "items": [
-          {
-            "title": "Another Bookmark"
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "title": "Folder",
+  "items": [
+    {
+      "title": "Bookmark"
+    },
+    {
+      "title": "Nested Folder",
+      "items": [
+        {
+          "title": "Another Bookmark"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 </details>
@@ -74,31 +72,29 @@ const bookmarks = parse(html, { withId: true })
 <summary>Result schema</summary>
 
 ```json
-[
-  {
-    "id": "0",
-    "title": "Folder",
-    "items": [
-      {
-        "id": "0.0",
-        "pid": "0",
-        "title": "Bookmark"
-      },
-      {
-        "id": "0.1",
-        "pid": "0",
-        "title": "Nested Folder",
-        "items": [
-          {
-            "id": "0.1.0",
-            "pid": "0.1",
-            "title": "Another Bookmark"
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "id": "0",
+  "title": "Folder",
+  "items": [
+    {
+      "id": "0.0",
+      "pid": "0",
+      "title": "Bookmark"
+    },
+    {
+      "id": "0.1",
+      "pid": "0",
+      "title": "Nested Folder",
+      "items": [
+        {
+          "id": "0.1.0",
+          "pid": "0.1",
+          "title": "Another Bookmark"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 </details>
@@ -232,9 +228,8 @@ Converts the parsed tree structure (from `parse`) back into an HTML string.
 import { parse, stringify } from 'nbff-parser'
 
 const parsed = parse(html)
-const rootFolder = parsed[0]
 
-const backToHtml = stringify(rootFolder)
+const backToHtml = stringify(parsed)
 // `backToHtml` matches the original `html`
 ```
 

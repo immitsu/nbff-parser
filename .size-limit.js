@@ -21,7 +21,7 @@ export default [
     name: 'stringify'
   },
   {
-    limit: '1.55 kB',
+    limit: '1.525 kB',
     name: 'all',
     path: 'index.js'
   }
