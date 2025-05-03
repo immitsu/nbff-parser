@@ -1,4 +1,4 @@
-import { equal, throws } from 'node:assert'
+import { equal, ok, throws } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { flatParse, flatStringify } from '../../index.js'
@@ -29,5 +29,12 @@ describe('flat-stringify', () => {
     const expected = fragments.template
 
     equal(actual, expected)
+  })
+
+  test('empty', () => {
+    const actual = flatStringify([])
+    const expected = '<H1>Bookmarks</H1>\n<DL><p>\n</DL><p>'
+
+    ok(actual.includes(expected))
   })
 })

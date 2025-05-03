@@ -1,4 +1,4 @@
-import { equal } from 'node:assert'
+import { equal, ok } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { parse, stringify } from '../../index.js'
@@ -24,5 +24,12 @@ describe('stringify', () => {
     const expected = fragments.template
 
     equal(actual, expected)
+  })
+
+  test('empty', () => {
+    const actual = stringify({ items: [], title: 'foo' })
+    const expected = '<H1>foo</H1>\n<DL><p>\n</DL><p>'
+
+    ok(actual.includes(expected))
   })
 })

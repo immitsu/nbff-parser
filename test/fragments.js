@@ -1,5 +1,5 @@
 export const empty = `
-  <DT><H1>Bookmarks</H1>
+  <H1>Bookmarks</H1>
   <DL><p>
   </DL><p>
 `
@@ -14,7 +14,7 @@ export const nested = `
 `
 
 export const root = `
-  <DT><H1>Bookmarks</H1>
+  <H1>Bookmarks</H1>
   <DL><p>
       ${bookmark}
   </DL><p>
