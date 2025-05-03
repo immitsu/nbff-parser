@@ -3,11 +3,11 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { parse } from '../../index.js'
-import { folder } from '../fragments.js'
+import { nested } from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('parse', () => {
-  describe('fragmented folder', () => {
+  describe('nested folder fragment', () => {
     const result = {
       add_date: 1739910037000,
       items: [
@@ -36,7 +36,7 @@ describe('parse', () => {
     }
 
     test('default', () => {
-      const actual = parse(folder)
+      const actual = parse(nested)
       const expected = result
 
       deepEqual(actual, expected)
@@ -55,7 +55,7 @@ describe('parse', () => {
         ]
       }
 
-      const actual = parse(folder, { withId: true })
+      const actual = parse(nested, { withId: true })
       const expected = anotherResult
 
       deepEqual(actual, expected)
@@ -73,14 +73,14 @@ describe('parse', () => {
         ...anotherResult
       } = result
 
-      const actual = parse(folder, { excludeAttrs })
+      const actual = parse(nested, { excludeAttrs })
       const expected = anotherResult
 
       deepEqual(actual, expected)
     })
 
     test('lower case', () => {
-      const initial = folder.toLowerCase()
+      const initial = nested.toLowerCase()
 
       const anotherResult = {
         ...result,

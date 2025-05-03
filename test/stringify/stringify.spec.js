@@ -18,21 +18,10 @@ describe('stringify', () => {
   })
 
   test('fragment', () => {
-    const parsed = parse(fragments.folder)
+    const parsed = parse(fragments.root)
 
     const actual = stringify(parsed)
-
-    const expected = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<!-- This is an automatically generated file.
-     It will be read and overwritten.
-     DO NOT EDIT! -->
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<TITLE>Bookmarks</TITLE>
-<H1>Edu</H1>
-<DL><p>
-    ${fragments.bookmark}
-</DL><p>
-`
+    const expected = fragments.template
 
     equal(actual, expected)
   })

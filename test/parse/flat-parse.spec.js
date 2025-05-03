@@ -3,11 +3,11 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { flatParse } from '../../index.js'
-import { folder } from '../fragments.js'
+import { nested } from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('flat-parse', () => {
-  describe('fragmented folder', () => {
+  describe('nested folder fragment', () => {
     const result = {
       add_date: 1739910037000,
       feed: false,
@@ -36,7 +36,7 @@ describe('flat-parse', () => {
     }
 
     test('default', () => {
-      const actual = flatParse(folder)
+      const actual = flatParse(nested)
       const expected = [result]
 
       deepEqual(actual, expected)
@@ -49,7 +49,7 @@ describe('flat-parse', () => {
         id: 1
       }
 
-      const actual = flatParse(folder, { withId: true })
+      const actual = flatParse(nested, { withId: true })
       const expected = [anotherResult]
 
       deepEqual(actual, expected)
@@ -69,7 +69,7 @@ describe('flat-parse', () => {
 
       const anotherResult = { ...result, folder: [anotherFolder] }
 
-      const actual = flatParse(folder, { excludeAttrs })
+      const actual = flatParse(nested, { excludeAttrs })
       const expected = [anotherResult]
 
       deepEqual(actual, expected)
