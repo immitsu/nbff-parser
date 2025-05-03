@@ -6,20 +6,20 @@ import * as fragments from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('flat-stringify', () => {
-  const initial = readFile('./bookmarks-2.html')
+  const html = readFile('./bookmarks-2.html')
 
   test('default', () => {
-    const parsed = flatParse(initial, { withId: true })
+    const parsed = flatParse(html, { withId: true })
     const actual = flatStringify(parsed)
 
-    equal(actual, initial)
+    equal(actual, html)
   })
 
   test('disable `withId` option', () => {
     throws(() => {
-      const parsed = flatParse(initial)
+      const parsed = flatParse(html)
       flatStringify(parsed)
-    }, /^error: root folder requires an identifier$/i)
+    }, /Error: Folders must have identifiers/)
   })
 
   test('fragment', () => {
