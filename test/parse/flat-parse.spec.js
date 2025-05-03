@@ -3,7 +3,7 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { flatParse } from '../../index.js'
-import { nested } from '../fragments.js'
+import * as fragments from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('flat-parse', () => {
@@ -36,7 +36,7 @@ describe('flat-parse', () => {
     }
 
     test('default', () => {
-      const actual = flatParse(nested)
+      const actual = flatParse(fragments.nested)
       const expected = [result]
 
       deepEqual(actual, expected)
@@ -49,7 +49,7 @@ describe('flat-parse', () => {
         id: 1
       }
 
-      const actual = flatParse(nested, { withId: true })
+      const actual = flatParse(fragments.nested, { withId: true })
       const expected = [anotherResult]
 
       deepEqual(actual, expected)
@@ -69,11 +69,18 @@ describe('flat-parse', () => {
 
       const anotherResult = { ...result, folder: [anotherFolder] }
 
-      const actual = flatParse(nested, { excludeAttrs })
+      const actual = flatParse(fragments.nested, { excludeAttrs })
       const expected = [anotherResult]
 
       deepEqual(actual, expected)
     })
+  })
+
+  test('empty folder fragment', () => {
+    const actual = flatParse(fragments.empty)
+    const expected = []
+
+    deepEqual(actual, expected)
   })
 
   describe('bookmarks-1.html', () => {

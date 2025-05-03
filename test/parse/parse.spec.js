@@ -3,7 +3,7 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { parse } from '../../index.js'
-import { nested } from '../fragments.js'
+import * as fragments from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('parse', () => {
@@ -36,7 +36,7 @@ describe('parse', () => {
     }
 
     test('default', () => {
-      const actual = parse(nested)
+      const actual = parse(fragments.nested)
       const expected = result
 
       deepEqual(actual, expected)
@@ -55,7 +55,7 @@ describe('parse', () => {
         ]
       }
 
-      const actual = parse(nested, { withId: true })
+      const actual = parse(fragments.nested, { withId: true })
       const expected = anotherResult
 
       deepEqual(actual, expected)
@@ -73,14 +73,14 @@ describe('parse', () => {
         ...anotherResult
       } = result
 
-      const actual = parse(nested, { excludeAttrs })
+      const actual = parse(fragments.nested, { excludeAttrs })
       const expected = anotherResult
 
       deepEqual(actual, expected)
     })
 
     test('lower case', () => {
-      const initial = nested.toLowerCase()
+      const initial = fragments.nested.toLowerCase()
 
       const anotherResult = {
         ...result,
@@ -94,6 +94,32 @@ describe('parse', () => {
       }
 
       const actual = parse(initial)
+      const expected = anotherResult
+
+      deepEqual(actual, expected)
+    })
+  })
+
+  describe('empty folder fragment', () => {
+    const result = {
+      items: [],
+      title: 'Bookmarks'
+    }
+
+    test('default', () => {
+      const actual = parse(fragments.empty)
+      const expected = result
+
+      deepEqual(actual, expected)
+    })
+
+    test('with id', () => {
+      const anotherResult = {
+        ...result,
+        id: '0'
+      }
+
+      const actual = parse(fragments.empty, { withId: true })
       const expected = anotherResult
 
       deepEqual(actual, expected)
