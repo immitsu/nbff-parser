@@ -3,11 +3,11 @@ import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { parse } from '../../index.js'
-import { fragment } from '../fragment.js'
+import { folder } from '../fragments.js'
 import { readFile } from '../utils.js'
 
 describe('parse', () => {
-  describe('fragment', () => {
+  describe('fragmented folder', () => {
     const result = {
       add_date: 1739910037000,
       items: [
@@ -36,7 +36,7 @@ describe('parse', () => {
     }
 
     test('default', () => {
-      const actual = parse(fragment)
+      const actual = parse(folder)
       const expected = result
 
       deepEqual(actual, expected)
@@ -55,7 +55,7 @@ describe('parse', () => {
         ]
       }
 
-      const actual = parse(fragment, { withId: true })
+      const actual = parse(folder, { withId: true })
       const expected = anotherResult
 
       deepEqual(actual, expected)
@@ -73,14 +73,14 @@ describe('parse', () => {
         ...anotherResult
       } = result
 
-      const actual = parse(fragment, { excludeAttrs })
+      const actual = parse(folder, { excludeAttrs })
       const expected = anotherResult
 
       deepEqual(actual, expected)
     })
 
     test('lower case', () => {
-      const initial = fragment.toLowerCase()
+      const initial = folder.toLowerCase()
 
       const anotherResult = {
         ...result,
