@@ -4,7 +4,7 @@ A simple parser for the Netscape Bookmark File Format (NBFF), commonly generated
 
 ## Features
 
-- **Small**: 0.3 to 1.5 kB (minified + brotlied), no dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
+- **Small**: Between 270 B and 1.5 kB (minified + brotlied), with no dependencies. It uses [Size Limit](https://github.com/ai/size-limit) to control size.
 - **Modern**: Supports ES modules and tree shaking.
 - **TypeScript ready**: Full type definitions included.
 
