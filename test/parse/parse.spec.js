@@ -4,7 +4,7 @@ import { describe, test } from 'node:test'
 
 import { parse } from '../../index.js'
 import * as fragments from '../fragments.js'
-import { readFile } from '../utils.js'
+import { readFile } from '../read-file.js'
 
 describe('parse', () => {
   describe('nested folder fragment', () => {
