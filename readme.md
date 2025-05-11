@@ -58,7 +58,7 @@ const bookmarks = parse(html)
 
 ##### `excludeAttrs: string[]`
 
-Exclude specified attributes from output.
+Excludes specified attributes from output.
 
 ##### `withId: boolean`
 
@@ -144,7 +144,7 @@ const bookmarks = flatParse(html)
 
 ##### `excludeAttrs: string[]`
 
-Exclude specified attributes from output.
+Excludes specified attributes from output.
 
 ##### `withId: boolean`
 
@@ -192,7 +192,7 @@ const bookmarks = flatParse(html, { withId: true })
 
 [Type definition](./types/parse/custom-parse.d.ts)
 
-Provides fine-grained control by allowing you to define handlers for bookmark elements during parsing.
+Allows you to define handlers for elements during parsing.
 
 Use this to build custom data structures or implement custom logic.
 
