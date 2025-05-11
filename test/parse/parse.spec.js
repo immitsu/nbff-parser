@@ -98,6 +98,15 @@ describe('parse', () => {
 
       deepEqual(actual, expected)
     })
+
+    test('single quotes', () => {
+      const initial = fragments.nested.replaceAll('"', "'")
+
+      const actual = parse(initial)
+      const expected = result
+
+      deepEqual(actual, expected)
+    })
   })
 
   describe('empty folder fragment', () => {
