@@ -1,3 +1,5 @@
+export { merge } from './lib/merge/merge.js'
+
 export { flatParse } from './lib/parse/flat-parse.js'
 export { parse } from './lib/parse/parse.js'
 export { traverse as customParse } from './lib/parse/traverse.js'

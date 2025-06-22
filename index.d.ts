@@ -1,3 +1,4 @@
+export { merge } from './types/merge/merge.js'
 export {
   Bookmark,
   Folder,
