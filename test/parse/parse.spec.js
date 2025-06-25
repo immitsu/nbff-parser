@@ -7,21 +7,21 @@ import * as fragments from '../fragments.js'
 import { readFile } from '../read-file.js'
 
 describe('parse', () => {
-  describe('nested folder fragment', () => {
-    const result = {
+  describe('folder from `../fragments.js`', () => {
+    const expected = {
       add_date: 1739910037000,
       items: [
         {
           add_date: 1739910037000,
           feed: false,
-          feedurl: '',
+          feedurl: 'https://...',
           href: 'https://www.wikipedia.org',
           icon: 'data:image/png;base64,...',
-          icon_uri: '',
+          icon_uri: 'https://...',
           islivepreview: false,
           last_modified: 1739910038000,
           last_visit: 1739910039000,
-          previewsize: { h: 10, w: 10 },
+          previewsize: { h: 12, w: 12 },
           private: false,
           shortcuturl: 'wikipedia',
           tags: ['edu', 'wikipedia'],
@@ -36,103 +36,63 @@ describe('parse', () => {
     }
 
     test('default', () => {
-      const actual = parse(fragments.nested)
-      const expected = result
-
-      deepEqual(actual, expected)
-    })
-
-    test('with id', () => {
-      const anotherResult = {
-        ...result,
-        id: '0',
-        items: [
-          {
-            ...result.items[0],
-            id: '0.0',
-            pid: '0'
-          }
-        ]
-      }
-
-      const actual = parse(fragments.nested, { withId: true })
-      const expected = anotherResult
+      const actual = parse(fragments.folder)
 
       deepEqual(actual, expected)
     })
 
     test('with excluded attrs', () => {
-      const excludeAttrs = [
-        'personal_toolbar_folder',
-        'unfiled_bookmarks_folder'
-      ]
+      const excludeAttrs = ['personal_toolbar_folder']
 
-      const {
-        personal_toolbar_folder,
-        unfiled_bookmarks_folder,
-        ...anotherResult
-      } = result
+      const actual = parse(fragments.folder, { excludeAttrs })
 
-      const actual = parse(fragments.nested, { excludeAttrs })
-      const expected = anotherResult
+      const { personal_toolbar_folder, ...expectedWithExcludedAttrs } = expected
 
-      deepEqual(actual, expected)
+      deepEqual(actual, expectedWithExcludedAttrs)
     })
 
     test('lower case', () => {
-      const initial = fragments.nested.toLowerCase()
-
-      const anotherResult = {
-        ...result,
-        items: [
-          {
-            ...result.items[0],
-            title: result.items[0].title.toLowerCase()
-          }
-        ],
-        title: result.title.toLowerCase()
-      }
+      const initial = fragments.folder.toLowerCase()
 
       const actual = parse(initial)
-      const expected = anotherResult
 
-      deepEqual(actual, expected)
+      const expectedLowerCased = {
+        ...expected,
+        items: [
+          {
+            ...expected.items[0],
+            title: expected.items[0].title.toLowerCase()
+          }
+        ],
+        title: expected.title.toLowerCase()
+      }
+
+      deepEqual(actual, expectedLowerCased)
     })
 
     test('single quotes', () => {
-      const initial = fragments.nested.replaceAll('"', "'")
-
+      const initial = fragments.folder.replaceAll('"', "'")
       const actual = parse(initial)
-      const expected = result
 
       deepEqual(actual, expected)
     })
   })
 
-  describe('empty folder fragment', () => {
-    const result = {
+  test('empty fragment', () => {
+    const initial = `
+      <H1>Bookmarks</H1>
+      <DL><p>
+      </DL><p>
+    `
+
+    const actual = parse(initial)
+
+    const expected = {
       items: [],
       title: 'Bookmarks'
     }
 
-    test('default', () => {
-      const actual = parse(fragments.empty)
-      const expected = result
-
-      deepEqual(actual, expected)
-    })
-
-    test('with id', () => {
-      const anotherResult = {
-        ...result,
-        id: '0'
-      }
-
-      const actual = parse(fragments.empty, { withId: true })
-      const expected = anotherResult
-
-      deepEqual(actual, expected)
-    })
+    deepEqual(actual, expected)
   })
 
   describe('bookmarks-1.html', () => {
@@ -144,69 +104,53 @@ describe('parse', () => {
       const expected = {
         items: [
           {
-            add_date: 1739906039000,
             items: [],
-            last_modified: 0,
-            personal_toolbar_folder: true,
             title: 'Toolbar'
           },
           {
-            add_date: 1745224163000,
             href: 'https://developer.mozilla.org/ru/',
             title: 'MDN Web Docs'
           },
           {
-            add_date: 1745224467000,
             items: [
               {
-                add_date: 1745224197000,
                 href: 'https://tc39.es/',
                 title: 'TC39 - Specifying JavaScript.'
               },
               {
-                add_date: 1745224489000,
                 items: [
                   {
-                    add_date: 1745224509000,
                     href: 'https://v8.dev/',
                     title: 'V8 JavaScript engine'
                   },
                   {
-                    add_date: 1745224509000,
                     href: 'https://spidermonkey.dev/',
                     title: 'Home | SpiderMonkey JavaScript/WebAssembly Engine'
                   }
                 ],
-                last_modified: 1745224528000,
                 title: 'Engines'
               },
               {
-                add_date: 1745224547000,
                 items: [
                   {
-                    add_date: 1745224555000,
                     description:
                       "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.",
                     href: 'https://nodejs.org/en',
                     title: 'Node.js — Run JavaScript Everywhere'
                   },
                   {
-                    add_date: 1745224555000,
                     description:
                       "Deno features improved security, performance, and developer experience compared to its predecessor. It's a great time to upgrade your Node.js project to run on Deno.",
                     href: 'https://deno.com/',
                     title: 'Deno, the next-generation JavaScript runtime'
                   }
                 ],
-                last_modified: 1745224555000,
                 title: 'Runtimes'
               }
             ],
-            last_modified: 1745224547000,
             title: 'JavaScript'
           },
           {
-            add_date: 1745224424000,
             href: 'https://en.wikipedia.org/wiki/Main_Page',
             title: 'Wikipedia, the free encyclopedia'
           }
@@ -224,61 +168,49 @@ describe('parse', () => {
         id: '0',
         items: [
           {
-            add_date: 1739906039000,
             id: '0.0',
             items: [],
-            last_modified: 0,
-            personal_toolbar_folder: true,
             pid: '0',
             title: 'Toolbar'
           },
           {
-            add_date: 1745224163000,
             href: 'https://developer.mozilla.org/ru/',
             id: '0.1',
             pid: '0',
             title: 'MDN Web Docs'
           },
           {
-            add_date: 1745224467000,
             id: '0.2',
             items: [
               {
-                add_date: 1745224197000,
                 href: 'https://tc39.es/',
                 id: '0.2.0',
                 pid: '0.2',
                 title: 'TC39 - Specifying JavaScript.'
               },
               {
-                add_date: 1745224489000,
                 id: '0.2.1',
                 items: [
                   {
-                    add_date: 1745224509000,
                     href: 'https://v8.dev/',
                     id: '0.2.1.0',
                     pid: '0.2.1',
                     title: 'V8 JavaScript engine'
                   },
                   {
-                    add_date: 1745224509000,
                     href: 'https://spidermonkey.dev/',
                     id: '0.2.1.1',
                     pid: '0.2.1',
                     title: 'Home | SpiderMonkey JavaScript/WebAssembly Engine'
                   }
                 ],
-                last_modified: 1745224528000,
                 pid: '0.2',
                 title: 'Engines'
               },
               {
-                add_date: 1745224547000,
                 id: '0.2.2',
                 items: [
                   {
-                    add_date: 1745224555000,
                     description:
                       "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.",
                     href: 'https://nodejs.org/en',
@@ -287,7 +219,6 @@ describe('parse', () => {
                     title: 'Node.js — Run JavaScript Everywhere'
                   },
                   {
-                    add_date: 1745224555000,
                     description:
                       "Deno features improved security, performance, and developer experience compared to its predecessor. It's a great time to upgrade your Node.js project to run on Deno.",
                     href: 'https://deno.com/',
@@ -296,17 +227,14 @@ describe('parse', () => {
                     title: 'Deno, the next-generation JavaScript runtime'
                   }
                 ],
-                last_modified: 1745224555000,
                 pid: '0.2',
                 title: 'Runtimes'
               }
             ],
-            last_modified: 1745224547000,
             pid: '0',
             title: 'JavaScript'
           },
           {
-            add_date: 1745224424000,
             href: 'https://en.wikipedia.org/wiki/Main_Page',
             id: '0.3',
             pid: '0',

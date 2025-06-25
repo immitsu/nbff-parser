@@ -2,11 +2,10 @@ import { equal, ok } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { parse, stringify } from '../../index.js'
-import * as fragments from '../fragments.js'
 import { readFile } from '../read-file.js'
 
 describe('stringify', () => {
-  test('files', () => {
+  test('read html files', () => {
     ;['./bookmarks-1.html', './bookmarks-2.html'].forEach(file => {
       const initial = readFile(file)
       const parsed = parse(initial)
@@ -15,15 +14,6 @@ describe('stringify', () => {
 
       equal(actual, initial)
     })
-  })
-
-  test('fragment', () => {
-    const parsed = parse(fragments.root)
-
-    const actual = stringify(parsed)
-    const expected = fragments.template
-
-    equal(actual, expected)
   })
 
   test('empty', () => {

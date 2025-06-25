@@ -5,15 +5,15 @@ import { merge } from '../../index.js'
 import { readFile } from '../read-file.js'
 
 describe('merge', () => {
-  test('html files', async () => {
+  test('read html files', () => {
     const readHTML = name => readFile(`./merge/${name}.html`)
     const [a, b, c, expected] = ['a', 'b', 'c', 'expected'].map(readHTML)
-    const actual = await merge(a, b, c)
+    const actual = merge(a, b, c)
     return deepEqual(actual, expected)
   })
 
   describe('splice bookmarks', () => {
-    test('identical', async () => {
+    test('identical', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -27,14 +27,14 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 
       ok(actual.includes(expected))
     })
 
-    test('with the same title but different href', async () => {
+    test('with the same title but different href', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -48,14 +48,14 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DT><A HREF="https://bar.com">Foo</A>\n</DL><p>'
 
       ok(actual.includes(expected))
     })
 
-    test('only the first one has a description', async () => {
+    test('only the first one has a description', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -70,14 +70,14 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
       ok(actual.includes(expected))
     })
 
-    test('only the second one has a description', async () => {
+    test('only the second one has a description', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -92,14 +92,14 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
       ok(actual.includes(expected))
     })
 
-    test('both have the same descriptions', async () => {
+    test('both have the same descriptions', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -115,14 +115,14 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
       ok(actual.includes(expected))
     })
 
-    test('both with the different descriptions', async () => {
+    test('both with the different descriptions', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -138,7 +138,7 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Foo\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Bar\n</DL><p>'
 
@@ -147,7 +147,7 @@ describe('merge', () => {
   })
 
   describe('splice folders', () => {
-    test('use <H1> of the first argument', async () => {
+    test('use <H1> of the first argument', () => {
       const a = `
         <TITLE>MyBookmarks</TITLE>
         <H1>MyBookmarks</H1>
@@ -162,7 +162,7 @@ describe('merge', () => {
         </DL><p>
       `
 
-      const actual = await merge(a, b)
+      const actual = merge(a, b)
       const expected =
         '<TITLE>Bookmarks</TITLE>\n<H1>MyBookmarks</H1>\n<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 
@@ -170,21 +170,21 @@ describe('merge', () => {
     })
   })
 
-  test('no arguments', async () => {
-    const actual = await merge()
+  test('no arguments', () => {
+    const actual = merge()
     const expected = '<H1>Bookmarks</H1>\n<DL><p>\n</DL><p>'
 
     ok(actual.includes(expected))
   })
 
-  test('one argument', async () => {
+  test('one argument', () => {
     const a = `
       <H1>Bookmarks</H1>
       <DL><p>
           <DT><A HREF="https://foo.com">Foo</A>
       </DL><p>
     `
-    const actual = await merge(a)
+    const actual = merge(a)
     const expected =
       '<H1>Bookmarks</H1>\n<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 

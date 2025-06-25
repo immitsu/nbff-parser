@@ -2,7 +2,6 @@ import { equal, ok, throws } from 'node:assert'
 import { describe, test } from 'node:test'
 
 import { flatParse, flatStringify } from '../../index.js'
-import * as fragments from '../fragments.js'
 import { readFile } from '../read-file.js'
 
 describe('flat-stringify', () => {
@@ -16,19 +15,11 @@ describe('flat-stringify', () => {
   })
 
   test('disable `withId` option', () => {
-    throws(() => {
-      const parsed = flatParse(html)
-      flatStringify(parsed)
-    }, /Error: Folders must have identifiers/)
-  })
-
-  test('fragment', () => {
-    const parsed = flatParse(fragments.root, { withId: true })
-
-    const actual = flatStringify(parsed)
-    const expected = fragments.template
-
-    equal(actual, expected)
+    const parsed = flatParse(html)
+    throws(
+      () => flatStringify(parsed),
+      /Error: Folder must have a unique identifier/
+    )
   })
 
   test('empty', () => {

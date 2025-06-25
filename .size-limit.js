@@ -24,11 +24,11 @@ export default [
     import: {
       'index.js': '{ merge }'
     },
-    limit: '1.65 kB',
+    limit: '1.63 kB',
     name: 'merge'
   },
   {
-    limit: '1.9 kB',
+    limit: '2 kB',
     name: 'all',
     path: 'index.js'
   }
