@@ -4,9 +4,9 @@ A simple parser for the Netscape Bookmark File Format (NBFF), commonly generated
 
 ## Features
 
-- **Small**: between 260 B and 2 kB (minified + Brotli compressed), with no dependencies.
-- **Modern**: supports ES modules and tree shaking.
-- **TypeScript-ready**: full type definitions included.
+- **Small**. Between 260 B and 2 kB (minified + Brotli compressed), with no dependencies.
+- **Modern**. Supports ES modules and tree shaking.
+- **TypeScript-ready**. Full type definitions included.
 
 ## Contents
 
@@ -29,7 +29,7 @@ npm i nbff-parser
 
 ## API
 
-The parser expects HTML file content to be provided as a string.
+The parser expects HTML file content to be provided as a string, and it also returns a string.
 
 ### `parse`
 
@@ -70,10 +70,10 @@ const bookmarks = parse(html)
 <br/>
 It can also be configured:
 
-| Option         | Type       |                                                            |
-| -------------- | ---------- | ---------------------------------------------------------- |
-| `excludeAttrs` | `string[]` | Excludes specified attributes from output.                 |
-| `withId`       | `boolean`  | Adds hierarchical identifiers `id` and `pid` to each item. |
+| Option         | Type       |                                                                                             |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------- |
+| `excludeAttrs` | `string[]` | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
+| `withId`       | `boolean`  | Adds hierarchical identifiers `id` and `pid` to each item.                                  |
 
 ### `flatParse`
 
@@ -119,10 +119,10 @@ const bookmarks = flatParse(html)
 <br/>
 It can also be configured:
 
-| Option         | Type       |                                            |
-| -------------- | ---------- | ------------------------------------------ |
-| `excludeAttrs` | `string[]` | Excludes specified attributes from output. |
-| `withId`       | `boolean`  | Adds incremental numeric `id` to items.    |
+| Option         | Type       |                                                                                             |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------- |
+| `excludeAttrs` | `string[]` | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
+| `withId`       | `boolean`  | Adds incremental numeric `id` to items.                                                     |
 
 ### `customParse`
 
