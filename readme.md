@@ -22,6 +22,9 @@ Additionally, the parser can merge the contents of multiple bookmark files into 
   - [stringify](#stringify)
   - [flatStringify](#flatStringify)
   - [merge](#merge)
+- [CLI](#cli)
+  - [exclude](#exclude)
+  - [merge](#merge)
 - [Attribute Handling](#attribute-handling)
 - [Acknowledgments](#acknowledgments)
 
@@ -192,6 +195,41 @@ Merges the contents of multiple HTML files into a single HTML string.
 - Attribute names are returned lowercased.
 - Attribute values may be slightly normalized.
 - See detailed attribute types [here](./types/attrs.d.ts).
+
+## CLI
+
+### `exclude`
+
+Removes specified attributes from the HTML file.
+
+| Argument                | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| `file=path/to/file`     | (required) Path to the input HTML file                          |
+| `attrs=attr1,attr2,...` | (required) Comma-separated list of attributes to exclude        |
+| `output=path/to/output` | (optional) Path to save the output file; defaults to input file |
+
+If `output` is not provided, the changes will overwrite the original file.
+
+Example:
+
+```sh
+nbff-parser exclude file=index.html attrs=add_date,icon output=cleaned.html
+```
+
+### `merge`
+
+Merges multiple files into a single output file.
+
+| Arguments                | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `files=path/to/file,...` | (required) Comma-separated list of input file paths to merge |
+| `output=path/to/output ` | (required) Path to save the merged output file               |
+
+Example:
+
+```sh
+nbff-parser merge files=foo.html,bar.html output=merged.html
+```
 
 ## Acknowledgments
 

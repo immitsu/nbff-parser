@@ -20,6 +20,9 @@
   "sideEffects": false,
   "type": "module",
   "types": "index.d.ts",
+  "bin": {
+    "nbff-parser": "./cli/index.js"
+  },
   "engines": {
     "node": "^18.0.0 || >=22.0.0"
   },
