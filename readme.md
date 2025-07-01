@@ -75,9 +75,10 @@ const bookmarks = parse(html)
 </details>
 
 <br/>
-It can also be configured:
 
-| Option         | Type       |                                                                                             |
+You can configure the output by activating options passed as the second argument.
+
+| Option         | Type       | Description                                                                                 |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------- |
 | `excludeAttrs` | `string[]` | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
 | `withId`       | `boolean`  | Adds hierarchical identifiers `id` and `pid` to each item.                                  |
@@ -124,9 +125,10 @@ const bookmarks = flatParse(html)
 </details>
 
 <br/>
-It can also be configured:
 
-| Option         | Type       |                                                                                             |
+You can configure the output by activating options passed as the second argument.
+
+| Option         | Type       | Description                                                                                 |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------- |
 | `excludeAttrs` | `string[]` | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
 | `withId`       | `boolean`  | Adds incremental numeric `id` to items.                                                     |
@@ -198,37 +200,48 @@ Merges the contents of multiple HTML files into a single HTML string.
 
 ## CLI
 
+Usage:
+
+```sh
+npx nbff-parser <command> [options]
+```
+
 ### `exclude`
 
 Removes specified attributes from the HTML file.
 
-| Argument                | Description                                                     |
-| ----------------------- | --------------------------------------------------------------- |
-| `file=path/to/file`     | (required) Path to the input HTML file                          |
-| `attrs=attr1,attr2,...` | (required) Comma-separated list of attributes to exclude        |
-| `output=path/to/output` | (optional) Path to save the output file; defaults to input file |
+| Argument                | Description                                          | Status   |
+| ----------------------- | ---------------------------------------------------- | -------- |
+| `file=path/to/file`     | Path to the input HTML file                          | Required |
+| `attrs=attr1,attr2,...` | Comma-separated list of attributes to exclude        | Required |
+| `output=path/to/output` | Path to save the output file; defaults to input file | Optional |
 
 If `output` is not provided, the changes will overwrite the original file.
 
 Example:
 
 ```sh
-npx nbff-parser exclude file=index.html attrs=add_date,icon output=cleaned.html
+npx nbff-parser exclude \
+  file=index.html \
+  attrs=add_date,icon \
+  output=cleaned.html
 ```
 
 ### `merge`
 
 Merges multiple files into a single output file.
 
-| Arguments                | Description                                                  |
-| ------------------------ | ------------------------------------------------------------ |
-| `files=path/to/file,...` | (required) Comma-separated list of input file paths to merge |
-| `output=path/to/output ` | (required) Path to save the merged output file               |
+| Arguments                | Description                                       | Status   |
+| ------------------------ | ------------------------------------------------- | -------- |
+| `files=path/to/file,...` | Comma-separated list of input file paths to merge | Required |
+| `output=path/to/output ` | Path to save the merged output file               | Required |
 
 Example:
 
 ```sh
-npx nbff-parser merge files=foo.html,bar.html output=merged.html
+npx nbff-parser merge \
+  files=foo.html,bar.html \
+  output=merged.html
 ```
 
 ## Acknowledgments
