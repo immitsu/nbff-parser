@@ -22,10 +22,10 @@ Additionally, the parser can merge the contents of multiple bookmark files into 
   - [stringify](#stringify)
   - [flatStringify](#flatStringify)
   - [merge](#merge)
+- [Attribute Handling](#attribute-handling)
 - [CLI](#cli)
   - [exclude](#exclude)
   - [merge](#merge)
-- [Attribute Handling](#attribute-handling)
 - [Acknowledgments](#acknowledgments)
 
 ## Install
