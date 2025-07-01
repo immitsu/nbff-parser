@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import fs from 'node:fs/promises'
 import test from 'node:test'
 
-import { exclude, merge } from '../../cli/cmds.js'
+import { exclude, merge } from '../../cli/commands.js'
 
 let originalReadFile
 let originalWriteFile
@@ -69,8 +69,10 @@ const mockFileSystem = () => {
 
 test.describe('exclude', () => {
   test('rejects input file that is not .html', async () => {
-    const message = await exclude('invalid.txt', ['attr'])
-    assert.match(message, /File "invalid.txt" must have a .html extension/)
+    await assert.rejects(
+      () => exclude('invalid.txt', ['attr']),
+      /^Error: File "invalid.txt" must have a .html extension/
+    )
   })
 
   test('excludes attributes and writes to a new file', async () => {
@@ -122,17 +124,19 @@ test.describe('exclude', () => {
       throw new Error('Disk full')
     }
 
-    const message = await exclude('foo.html', ['add_date'], 'out.html')
-
-    assert.match(message, /Error during excluding: Disk full/)
+    await assert.rejects(
+      () => exclude('foo.html', ['add_date'], 'out.html'),
+      /^Error: Disk full/
+    )
   })
 })
 
 test.describe('merge', () => {
   test('rejects input files that are not .html', async () => {
-    const message = await merge('a.html,b.txt', 'out.html')
-
-    assert.match(message, /must have a \.html extension/)
+    await assert.rejects(
+      () => merge(['a.html', 'b.txt'], 'out.html'),
+      /must have a \.html extension/
+    )
   })
 
   test('throws on fs.readFile failure', async () => {
@@ -143,15 +147,16 @@ test.describe('merge', () => {
       throw new Error('Should not be called')
     }
 
-    const message = await merge('file1.html', 'out.html')
-
-    assert.match(message, /^Error during merge: Read error/)
+    await assert.rejects(
+      () => merge(['a.html', 'b.html'], 'out.html'),
+      /^Error: Read error/
+    )
   })
 
   test('merges successfully', async () => {
     const { getWritten } = mockFileSystem()
 
-    const message = await merge('bar.html,foo.html', 'out.html')
+    const message = await merge(['bar.html', 'foo.html'], 'out.html')
 
     const { writtenContent, writtenPath } = getWritten()
 
