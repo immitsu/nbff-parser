@@ -213,7 +213,7 @@ If `output` is not provided, the changes will overwrite the original file.
 Example:
 
 ```sh
-nbff-parser exclude file=index.html attrs=add_date,icon output=cleaned.html
+npx nbff-parser exclude file=index.html attrs=add_date,icon output=cleaned.html
 ```
 
 ### `merge`
@@ -228,7 +228,7 @@ Merges multiple files into a single output file.
 Example:
 
 ```sh
-nbff-parser merge files=foo.html,bar.html output=merged.html
+npx nbff-parser merge files=foo.html,bar.html output=merged.html
 ```
 
 ## Acknowledgments
