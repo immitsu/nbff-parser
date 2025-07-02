@@ -31,7 +31,14 @@ Additionally, the parser can merge the contents of multiple bookmark files into 
 ## Install
 
 ```sh
-npm i nbff-parser
+# npm
+npm install nbff-parser
+
+# pnpm
+pnpm add nbff-parser
+
+# yarn
+yarn add nbff-parser
 ```
 
 ## API
