@@ -25,7 +25,7 @@ Additionally, the parser can merge the contents of multiple bookmark files into 
 - [Attribute Handling](#attribute-handling)
 - [CLI](#cli)
   - [exclude](#exclude)
-  - [merge](#cli-merge)
+  - [merge](#merge-1)
 - [Acknowledgments](#acknowledgments)
 
 ## Install
