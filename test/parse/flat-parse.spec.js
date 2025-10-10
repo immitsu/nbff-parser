@@ -61,6 +61,13 @@ describe('flat-parse', () => {
 
       deepEqual(actual, expected)
     })
+
+    test('without last </DL>', () => {
+      const initial = fragments.folder.replace('</DL><p>', '')
+      const actual = flatParse(initial)
+
+      deepEqual(actual, expected)
+    })
   })
 
   test('empty fragment', () => {
@@ -73,6 +80,107 @@ describe('flat-parse', () => {
     const actual = flatParse(initial)
 
     const expected = []
+
+    deepEqual(actual, expected)
+  })
+
+  test('skip empty folder', () => {
+    const initial = `
+      <DT><H3>JavaScript</H3>
+      <DL><p>
+          <DT><A HREF="https://tc39.es/">TC39 - Specifying JavaScript.</A>
+          <DT><H3>Engines</H3>
+          <DL><p>
+              <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
+          </DL><p>
+          <DT><H3>Runtimes</H3>
+          <DL><p>
+          </DL><p>
+      </DL><p>
+    `
+
+    const actual = flatParse(initial)
+
+    const expected = [
+      {
+        folder: [
+          {
+            title: 'JavaScript'
+          }
+        ],
+        href: 'https://tc39.es/',
+        title: 'TC39 - Specifying JavaScript.'
+      },
+      {
+        folder: [
+          {
+            title: 'JavaScript'
+          },
+          {
+            title: 'Engines'
+          }
+        ],
+        href: 'https://v8.dev/',
+        title: 'V8 JavaScript engine'
+      }
+    ]
+
+    deepEqual(actual, expected)
+  })
+
+  test('without closing </DL> at all', () => {
+    const initial = `
+      <DT><H3>Folder1</H3>
+      <DL><p>
+          <DT><A HREF="https://developer.mozilla.org/">MDN Web Docs</A>
+          <DT><H3>Folder2</H3>
+          <DL><p>
+              <DT><A HREF="https://tc39.es/">TC39 - Specifying JavaScript.</A>
+              <DT><H3>Folder3</H3>
+              <DL><p>
+                <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
+    `
+
+    const actual = flatParse(initial)
+
+    const expected = [
+      {
+        folder: [
+          {
+            title: 'Folder1'
+          }
+        ],
+        href: 'https://developer.mozilla.org/',
+        title: 'MDN Web Docs'
+      },
+      {
+        folder: [
+          {
+            title: 'Folder1'
+          },
+          {
+            title: 'Folder2'
+          }
+        ],
+        href: 'https://tc39.es/',
+        title: 'TC39 - Specifying JavaScript.'
+      },
+      {
+        folder: [
+          {
+            title: 'Folder1'
+          },
+          {
+            title: 'Folder2'
+          },
+          {
+            title: 'Folder3'
+          }
+        ],
+        href: 'https://v8.dev/',
+        title: 'V8 JavaScript engine'
+      }
+    ]
 
     deepEqual(actual, expected)
   })
