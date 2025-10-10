@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
@@ -49,6 +48,7 @@ describe('flat-parse', () => {
       const actual = flatParse(fragments.folder, { excludeAttrs })
 
       const bookmark = expected[0]
+      // eslint-disable-next-line no-unused-vars
       const { personal_toolbar_folder, ...newFolder } = bookmark.folder[0]
       const expectedWithExcludedAttrs = [{ ...bookmark, folder: [newFolder] }]
 

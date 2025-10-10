@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { deepEqual } from 'node:assert'
 import { describe, test } from 'node:test'
 
@@ -46,6 +45,7 @@ describe('parse', () => {
 
       const actual = parse(fragments.folder, { excludeAttrs })
 
+      // eslint-disable-next-line no-unused-vars
       const { personal_toolbar_folder, ...expectedWithExcludedAttrs } = expected
 
       deepEqual(actual, expectedWithExcludedAttrs)
@@ -72,6 +72,13 @@ describe('parse', () => {
 
     test('single quotes', () => {
       const initial = fragments.folder.replaceAll('"', "'")
+      const actual = parse(initial)
+
+      deepEqual(actual, expected)
+    })
+
+    test('without closing </DL>', () => {
+      const initial = fragments.folder.replace('</DL><p>', '')
       const actual = parse(initial)
 
       deepEqual(actual, expected)
