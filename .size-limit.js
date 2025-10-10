@@ -3,7 +3,7 @@ export default [
     import: {
       'index.js': '{ customParse }'
     },
-    limit: '280 B',
+    limit: '275',
     name: 'customParse'
   },
   {

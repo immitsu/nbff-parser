@@ -77,9 +77,39 @@ describe('parse', () => {
       deepEqual(actual, expected)
     })
 
-    test('without closing </DL>', () => {
+    test('without last </DL>', () => {
       const initial = fragments.folder.replace('</DL><p>', '')
       const actual = parse(initial)
+
+      deepEqual(actual, expected)
+    })
+
+    test('without closing </DL> at all', () => {
+      const initial = `
+        <DT><H3>Folder1</H3>
+        <DL><p>
+            <DT><H3>Folder2</H3>
+            <DL><p>
+                <DT><H3>Folder3</H3>
+                <DL><p>
+      `
+
+      const actual = parse(initial)
+
+      const expected = {
+        items: [
+          {
+            items: [
+              {
+                items: [],
+                title: 'Folder3'
+              }
+            ],
+            title: 'Folder2'
+          }
+        ],
+        title: 'Folder1'
+      }
 
       deepEqual(actual, expected)
     })
