@@ -1,6 +1,6 @@
 {
   "name": "nbff-parser",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "A simple parser for the Netscape Bookmark file format",
   "keywords": [
     "bookmarks",
