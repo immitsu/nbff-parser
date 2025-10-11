@@ -185,6 +185,42 @@ describe('flat-parse', () => {
     deepEqual(actual, expected)
   })
 
+  test('with transform', () => {
+    const initial = `
+      <DT><H3>JavaScript</H3>
+      <DL><p>
+          <DT><A HREF="https://tc39.es/" PERSONAL_TOOLBAR_FOLDER="true">TC39 - Specifying JavaScript.</A>
+          <DT><H3>Engines</H3>
+          <DL><p>
+              <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
+          </DL><p>
+      </DL><p>
+    `
+
+    const transform = item => {
+      if (item.personal_toolbar_folder) return null
+
+      return {
+        tag: item.folder.map(f => f.title).join(' / '),
+        title: item.title,
+        url: item.href
+      }
+    }
+
+    const actual = flatParse(initial, { transform })
+
+    const expected = [
+      null,
+      {
+        tag: 'JavaScript / Engines',
+        title: 'V8 JavaScript engine',
+        url: 'https://v8.dev/'
+      }
+    ]
+
+    deepEqual(actual, expected)
+  })
+
   describe('bookmarks-1.html', () => {
     const initial = readFile('./bookmarks-1.html')
 

@@ -135,10 +135,11 @@ const bookmarks = flatParse(html)
 
 You can configure the output by activating options passed as the second argument.
 
-| Option         | Type       | Description                                                                                 |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| `excludeAttrs` | `string[]` | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
-| `withId`       | `boolean`  | Adds incremental numeric `id` to items.                                                     |
+| Option         | Type                        | Description                                                                                 |
+| -------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
+| `excludeAttrs` | `string[]`                  | Excludes specified attributes from output. See [attributes definition](./types/attrs.d.ts). |
+| `withId`       | `boolean`                   | Adds incremental numeric `id` to items.                                                     |
+| `transform`    | `(item: FlatBookmark) => T` | Function to transform bookmark item structure.                                              |
 
 ### `customParse`
 
@@ -183,7 +184,7 @@ const stringified = stringify(parsed)
 
 Converts the flat list from `flatParse` back into an HTML string.
 
-> It requires using `flatParse` with `{ withId: true }` to ensure unique item IDs.
+> It requires using `flatParse` with `{ withId: true }` to ensure unique item IDs, and without `transform` to ensure a known structure.
 
 ```js
 import { flatParse, flatStringify } from 'nbff-parser'

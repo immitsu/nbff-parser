@@ -16,17 +16,19 @@ export type FlatBookmarkWithId = WithId<
 >
 
 // Overload signatures.
-export function flatParse(
+export function flatParse<T = FlatBookmark>(
   text: string,
   options?: Partial<{
     excludeAttrs: AllAttrKeys[]
     withId: false
+    transform: (item: FlatBookmark) => T
   }>
-): FlatBookmark[]
-export function flatParse(
+): T[]
+export function flatParse<T = FlatBookmarkWithId>(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
+    transform?: (item: FlatBookmarkWithId) => T
   }
-): FlatBookmarkWithId[]
+): T[]
