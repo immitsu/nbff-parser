@@ -135,11 +135,11 @@ const bookmarks = flatParse(html)
 
 You can configure the output by activating options passed as the second argument.
 
-| Option         | Type                                             | Description                                         |
-| -------------- | ------------------------------------------------ | --------------------------------------------------- |
-| `excludeAttrs` | `string[]`                                       | Excludes specified attributes from output.          |
-| `withId`       | `boolean`                                        | Adds incremental numeric `id` to items.             |
-| `transform`    | `(item: FlatBookmark) => T \| null \| undefined` | Transforms items, filtering out `null`/`undefined`. |
+| Option         | Type                        | Description                                |
+| -------------- | --------------------------- | ------------------------------------------ |
+| `excludeAttrs` | `string[]`                  | Excludes specified attributes from output. |
+| `withId`       | `boolean`                   | Adds incremental numeric `id` to items.    |
+| `transform`    | `(item: FlatBookmark) => T` | Transforms items, omitting falsy returns.  |
 
 ### `customParse`
 
