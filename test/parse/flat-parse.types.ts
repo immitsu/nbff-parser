@@ -1,4 +1,4 @@
-import { FlatBookmark, FlatBookmarkWithId } from '../../index.js'
+import { FlatBookmark, FlatBookmarkWithId, flatParse } from '../../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 
@@ -45,3 +45,25 @@ const bookmarkWithId: Required<FlatBookmarkWithId> = {
   ],
   id: 0
 }
+
+const parser = flatParse('..')
+parser satisfies FlatBookmark[]
+
+const parserWithId = flatParse('..', { withId: true })
+parserWithId satisfies FlatBookmark[]
+parserWithId satisfies FlatBookmarkWithId[]
+
+const parserWithTransform = flatParse('..', {
+  transform: item => {
+    if (!item.href) return
+    return ({ name: item.title, url: item.href })
+  }
+})
+parserWithTransform satisfies { name: string, url: string }[]
+
+const parserWithIdent = flatParse('..', { transform: item => item })
+parserWithIdent satisfies FlatBookmark[]
+
+const parserWithIdAndIdent = flatParse('..', { withId: true, transform: item => item })
+parserWithIdAndIdent satisfies FlatBookmark[]
+parserWithIdAndIdent satisfies FlatBookmarkWithId[]

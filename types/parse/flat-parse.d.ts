@@ -15,18 +15,22 @@ export type FlatBookmarkWithId = WithId<
   }
 >
 
+type Truthy<V> = V extends null | undefined | false | 0 | "" ? never : V
+
 // Overload signatures.
-export function flatParse(
+export function flatParse<T = FlatBookmark>(
   text: string,
   options?: Partial<{
     excludeAttrs: AllAttrKeys[]
     withId: false
+    transform: (item: FlatBookmark) => T
   }>
-): FlatBookmark[]
-export function flatParse(
+): Truthy<T>[]
+export function flatParse<T = FlatBookmarkWithId>(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
+    transform?: (item: FlatBookmarkWithId) => T
   }
-): FlatBookmarkWithId[]
+): Truthy<T>[]
