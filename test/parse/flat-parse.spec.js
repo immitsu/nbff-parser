@@ -198,7 +198,7 @@ describe('flat-parse', () => {
     `
 
     const transform = item => {
-      if (item.personal_toolbar_folder) return null
+      if (item.personal_toolbar_folder) return
 
       return {
         tag: item.folder.map(f => f.title).join(' / '),
@@ -210,7 +210,6 @@ describe('flat-parse', () => {
     const actual = flatParse(initial, { transform })
 
     const expected = [
-      null,
       {
         tag: 'JavaScript / Engines',
         title: 'V8 JavaScript engine',

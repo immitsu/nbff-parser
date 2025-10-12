@@ -15,20 +15,22 @@ export type FlatBookmarkWithId = WithId<
   }
 >
 
+type TransformFn<I, R> = (item: I) => R | null | undefined
+
 // Overload signatures.
 export function flatParse<T = FlatBookmark>(
   text: string,
   options?: Partial<{
     excludeAttrs: AllAttrKeys[]
     withId: false
-    transform: (item: FlatBookmark) => T
+    transform: TransformFn<FlatBookmark, T>
   }>
-): T[]
+): NonNullable<T>[]
 export function flatParse<T = FlatBookmarkWithId>(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
-    transform?: (item: FlatBookmarkWithId) => T
+    transform?: TransformFn<FlatBookmarkWithId, T>
   }
-): T[]
+): NonNullable<T>[]

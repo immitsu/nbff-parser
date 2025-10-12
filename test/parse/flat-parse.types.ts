@@ -53,8 +53,13 @@ const parserWithId = flatParse('..', { withId: true })
 parserWithId satisfies FlatBookmark[]
 parserWithId satisfies FlatBookmarkWithId[]
 
-const parserWithTransform = flatParse('..', { transform: item => ({ name: item.title }) })
-parserWithTransform satisfies { name: string }[]
+const parserWithTransform = flatParse('..', {
+  transform: item => {
+    if (!item.href) return
+    return ({ name: item.title, url: item.href })
+  }
+})
+parserWithTransform satisfies { name: string, url: string }[]
 
 const parserWithIdent = flatParse('..', { transform: item => item })
 parserWithIdent satisfies FlatBookmark[]
