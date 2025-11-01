@@ -32,6 +32,7 @@ export function parse<T = Bookmark>(
     excludeAttrs: AllAttrKeys[]
     withId: false
     transform: (bookmark: Bookmark) => T
+    dropEmptyFolders: boolean
   }>
 ): Folder<Truthy<T>>
 export function parse<T = BookmarkWithId>(
@@ -40,5 +41,6 @@ export function parse<T = BookmarkWithId>(
     excludeAttrs?: AllAttrKeys[]
     withId: true
     transform?: (bookmark: BookmarkWithId) => T
+    dropEmptyFolders?: boolean
   }
 ): FolderWithId<Truthy<T>>

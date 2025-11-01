@@ -159,6 +159,32 @@ describe('parse', () => {
 
       deepEqual(actual, expected)
     })
+
+    test('drop empty folder', () => {
+      const initial = `
+          <DT><H3>JavaScript</H3>
+          <DL><p>
+              <DT><A HREF="https://tc39.es/">TC39.</A>
+              <DT><H3>Engines</H3>
+              <DL><p>
+              </DL><p>
+          </DL><p>
+        `
+
+      const actual = parse(initial, { dropEmptyFolders: true })
+
+      const expected = {
+        items: [
+          {
+            href: 'https://tc39.es/',
+            title: 'TC39.'
+          }
+        ],
+        title: 'JavaScript'
+      }
+
+      deepEqual(actual, expected)
+    })
   })
 
   test('empty fragment', () => {

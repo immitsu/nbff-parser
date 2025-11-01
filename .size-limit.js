@@ -28,7 +28,7 @@ export default [
     name: 'merge'
   },
   {
-    limit: '2.065 kB',
+    limit: '2.07 kB',
     name: 'all',
     path: 'index.js'
   }
