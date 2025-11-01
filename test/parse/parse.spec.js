@@ -171,7 +171,7 @@ describe('parse', () => {
           </DL><p>
         `
 
-      const actual = parse(initial, { dropEmptyFolders: true })
+      const actual = parse(initial, { noEmpty: true })
 
       const expected = {
         items: [
