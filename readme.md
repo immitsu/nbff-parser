@@ -86,10 +86,11 @@ const bookmarks = parse(html)
 
 You can configure the output by activating options passed as the second argument.
 
-| Option         | Type            | Description                                                                      |
-| -------------- | --------------- | -------------------------------------------------------------------------------- |
-| `excludeAttrs` | `AllAttrKeys[]` | Excludes specified attributes from output. See [definition](./types/attrs.d.ts). |
-| `withId`       | `boolean`       | Adds hierarchical identifiers `id` and `pid` to each item.                       |
+| Option         | Type                    | Description                                                                      |
+| -------------- | ----------------------- | -------------------------------------------------------------------------------- |
+| `excludeAttrs` | `AllAttrKeys[]`         | Excludes specified attributes from output. See [definition](./types/attrs.d.ts). |
+| `withId`       | `boolean`               | Adds hierarchical identifiers `id` and `pid` to each item.                       |
+| `transform`    | `(item: Bookmark) => T` | Transforms bookmarks, omitting falsy returns.                                    |
 
 ### `flatParse`
 

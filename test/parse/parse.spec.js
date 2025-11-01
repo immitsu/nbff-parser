@@ -113,6 +113,52 @@ describe('parse', () => {
 
       deepEqual(actual, expected)
     })
+
+    test('with transform', () => {
+      const initial = `
+        <DT><H3>JavaScript</H3>
+        <DL><p>
+            <DT><A HREF="https://developer.mozilla.org/" ADD_DATE="1745224163">MDN Web Docs</A>
+            <DT><A HREF="https://tc39.es/" PERSONAL_TOOLBAR_FOLDER="true">TC39 - Specifying JavaScript.</A>
+            <DT><H3>Engines</H3>
+            <DL><p>
+                <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
+            </DL><p>
+        </DL><p>
+      `
+
+      const transform = item => {
+        if (item.personal_toolbar_folder) return
+
+        return {
+          title: item.title,
+          url: item.href
+        }
+      }
+
+      const actual = parse(initial, { transform })
+
+      const expected = {
+        items: [
+          {
+            title: 'MDN Web Docs',
+            url: 'https://developer.mozilla.org/'
+          },
+          {
+            items: [
+              {
+                title: 'V8 JavaScript engine',
+                url: 'https://v8.dev/'
+              }
+            ],
+            title: 'Engines'
+          }
+        ],
+        title: 'JavaScript'
+      }
+
+      deepEqual(actual, expected)
+    })
   })
 
   test('empty fragment', () => {

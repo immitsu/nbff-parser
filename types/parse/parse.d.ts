@@ -5,9 +5,9 @@ export type Bookmark = BookmarkAttrs & {
   description?: string
 }
 
-export type Folder = FolderAttrs & {
+export type Folder<T = Bookmark> = FolderAttrs & {
   title: string
-  items: (Folder | Bookmark)[]
+  items: (Folder | T)[]
 }
 
 type WithId<T> = T & {
@@ -17,24 +17,28 @@ type WithId<T> = T & {
 
 export type BookmarkWithId = WithId<Bookmark>
 
-export type FolderWithId = WithId<
+export type FolderWithId<T = BookmarkWithId> = WithId<
   Omit<Folder, 'items'> & {
-    items: (FolderWithId | BookmarkWithId)[]
+    items: (FolderWithId | T)[]
   }
 >
 
+type Truthy<V> = V extends null | undefined | false | 0 | "" ? never : V
+
 // Overload signatures.
-export function parse(
+export function parse<T = Bookmark>(
   text: string,
   options?: Partial<{
     excludeAttrs: AllAttrKeys[]
     withId: false
+    transform: (bookmark: Bookmark) => T
   }>
-): Folder
-export function parse(
+): Folder<Truthy<T>>
+export function parse<T = BookmarkWithId>(
   text: string,
   options: {
     excludeAttrs?: AllAttrKeys[]
     withId: true
+    transform?: (bookmark: BookmarkWithId) => T
   }
-): FolderWithId
+): FolderWithId<Truthy<T>>

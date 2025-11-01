@@ -1,4 +1,4 @@
-import { Bookmark, BookmarkWithId, Folder, FolderWithId } from '../../index.js'
+import { Bookmark, BookmarkWithId, Folder, FolderWithId, parse } from '../../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 
@@ -62,3 +62,25 @@ const folderWithId: Required<FolderWithId> = {
   pid: '0',
   id: '0.0'
 }
+
+const parser = parse('..')
+parser satisfies Folder
+
+const parserWithId = parse('..', { withId: true })
+parserWithId satisfies Folder
+parserWithId satisfies FolderWithId
+
+const parserWithTransform = parse('..', {
+  transform: item => {
+    if (!item.href) return
+    return ({ name: item.title, url: item.href })
+  }
+})
+parserWithTransform satisfies Folder<{ name: string, url: string }>
+
+const parserWithIdent = parse('..', { transform: item => item })
+parserWithIdent satisfies Folder
+
+const parserWithIdAndIdent = parse('..', { withId: true, transform: item => item })
+parserWithIdAndIdent satisfies Folder
+parserWithIdAndIdent satisfies FolderWithId
