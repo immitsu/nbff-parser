@@ -9,6 +9,7 @@ describe('flat-stringify', () => {
 
   test('default', () => {
     const parsed = flatParse(html, { withId: true })
+
     const actual = flatStringify(parsed)
 
     equal(actual, html)
@@ -16,6 +17,7 @@ describe('flat-stringify', () => {
 
   test('disable `withId` option', () => {
     const parsed = flatParse(html)
+
     throws(
       () => flatStringify(parsed),
       /Error: Folder must have a unique identifier/

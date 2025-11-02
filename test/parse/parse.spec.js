@@ -6,7 +6,7 @@ import * as fragments from '../fragments.js'
 import { readFile } from '../read-file.js'
 
 describe('parse', () => {
-  describe('folder from `../fragments.js`', () => {
+  describe('from `../fragments.js`', () => {
     const expected = {
       add_date: 1739910037000,
       items: [
@@ -35,28 +35,28 @@ describe('parse', () => {
     }
 
     test('default', () => {
-      const actual = parse(fragments.folder)
+      const actual = parse(fragments.completeFolder)
 
       deepEqual(actual, expected)
     })
 
-    test('with excluded attrs', () => {
+    test('exclude attributes', () => {
       const excludeAttrs = ['personal_toolbar_folder']
 
-      const actual = parse(fragments.folder, { excludeAttrs })
+      const actual = parse(fragments.completeFolder, { excludeAttrs })
 
       // eslint-disable-next-line no-unused-vars
-      const { personal_toolbar_folder, ...expectedWithExcludedAttrs } = expected
+      const { personal_toolbar_folder, ...newExpected } = expected
 
-      deepEqual(actual, expectedWithExcludedAttrs)
+      deepEqual(actual, newExpected)
     })
 
     test('lower case', () => {
-      const initial = fragments.folder.toLowerCase()
+      const initial = fragments.completeFolder.toLowerCase()
 
       const actual = parse(initial)
 
-      const expectedLowerCased = {
+      const newExpected = {
         ...expected,
         items: [
           {
@@ -67,25 +67,39 @@ describe('parse', () => {
         title: expected.title.toLowerCase()
       }
 
-      deepEqual(actual, expectedLowerCased)
+      deepEqual(actual, newExpected)
     })
 
     test('single quotes', () => {
-      const initial = fragments.folder.replaceAll('"', "'")
+      const initial = fragments.completeFolder.replaceAll('"', "'")
+
       const actual = parse(initial)
 
       deepEqual(actual, expected)
     })
 
     test('without last </DL>', () => {
-      const initial = fragments.folder.replace('</DL><p>', '')
+      const initial = fragments.completeFolder.replace(/<\/DL><p>$/, '')
+
       const actual = parse(initial)
 
       deepEqual(actual, expected)
     })
 
-    test('without closing </DL> at all', () => {
-      const initial = `
+    test('empty file', () => {
+      const actual = parse(fragments.emptyFile)
+
+      const expected = {
+        items: [],
+        title: 'Bookmarks'
+      }
+
+      deepEqual(actual, expected)
+    })
+  })
+
+  test('incomplete structure', () => {
+    const initial = `
         <DT><H3>Folder1</H3>
         <DL><p>
             <DT><H3>Folder2</H3>
@@ -94,111 +108,93 @@ describe('parse', () => {
                 <DL><p>
       `
 
-      const actual = parse(initial)
-
-      const expected = {
-        items: [
-          {
-            items: [
-              {
-                items: [],
-                title: 'Folder3'
-              }
-            ],
-            title: 'Folder2'
-          }
-        ],
-        title: 'Folder1'
-      }
-
-      deepEqual(actual, expected)
-    })
-
-    test('with transform', () => {
-      const initial = `
-        <DT><H3>JavaScript</H3>
-        <DL><p>
-            <DT><A HREF="https://developer.mozilla.org/" ADD_DATE="1745224163">MDN Web Docs</A>
-            <DT><A HREF="https://tc39.es/" PERSONAL_TOOLBAR_FOLDER="true">TC39 - Specifying JavaScript.</A>
-            <DT><H3>Engines</H3>
-            <DL><p>
-                <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
-            </DL><p>
-        </DL><p>
-      `
-
-      const transform = item => {
-        if (item.personal_toolbar_folder) return
-
-        return {
-          title: item.title,
-          url: item.href
-        }
-      }
-
-      const actual = parse(initial, { transform })
-
-      const expected = {
-        items: [
-          {
-            title: 'MDN Web Docs',
-            url: 'https://developer.mozilla.org/'
-          },
-          {
-            items: [
-              {
-                title: 'V8 JavaScript engine',
-                url: 'https://v8.dev/'
-              }
-            ],
-            title: 'Engines'
-          }
-        ],
-        title: 'JavaScript'
-      }
-
-      deepEqual(actual, expected)
-    })
-
-    test('drop empty folder', () => {
-      const initial = `
-          <DT><H3>JavaScript</H3>
-          <DL><p>
-              <DT><A HREF="https://tc39.es/">TC39.</A>
-              <DT><H3>Engines</H3>
-              <DL><p>
-              </DL><p>
-          </DL><p>
-        `
-
-      const actual = parse(initial, { noEmpty: true })
-
-      const expected = {
-        items: [
-          {
-            href: 'https://tc39.es/',
-            title: 'TC39.'
-          }
-        ],
-        title: 'JavaScript'
-      }
-
-      deepEqual(actual, expected)
-    })
-  })
-
-  test('empty fragment', () => {
-    const initial = `
-      <H1>Bookmarks</H1>
-      <DL><p>
-      </DL><p>
-    `
-
     const actual = parse(initial)
 
     const expected = {
-      items: [],
-      title: 'Bookmarks'
+      items: [
+        {
+          items: [
+            {
+              items: [],
+              title: 'Folder3'
+            }
+          ],
+          title: 'Folder2'
+        }
+      ],
+      title: 'Folder1'
+    }
+
+    deepEqual(actual, expected)
+  })
+
+  test('transform', () => {
+    const initial = `
+      <DT><H3>JavaScript</H3>
+      <DL><p>
+          <DT><A HREF="https://developer.mozilla.org/" ADD_DATE="1745224163">MDN Web Docs</A>
+          <DT><A HREF="https://tc39.es/" PERSONAL_TOOLBAR_FOLDER="true">TC39 - Specifying JavaScript.</A>
+          <DT><H3>Engines</H3>
+          <DL><p>
+              <DT><A HREF="https://v8.dev/">V8 JavaScript engine</A>
+          </DL><p>
+      </DL><p>
+    `
+
+    const transform = item => {
+      if (item.personal_toolbar_folder) return
+
+      return {
+        title: item.title,
+        url: item.href
+      }
+    }
+
+    const actual = parse(initial, { transform })
+
+    const expected = {
+      items: [
+        {
+          title: 'MDN Web Docs',
+          url: 'https://developer.mozilla.org/'
+        },
+        {
+          items: [
+            {
+              title: 'V8 JavaScript engine',
+              url: 'https://v8.dev/'
+            }
+          ],
+          title: 'Engines'
+        }
+      ],
+      title: 'JavaScript'
+    }
+
+    deepEqual(actual, expected)
+  })
+
+  test('no empty folder', () => {
+    const initial = `
+      <DT><H3>JavaScript</H3>
+      <DL><p>
+          <DT><A HREF="https://tc39.es/">TC39.</A>
+          <DT><H3>Engines</H3>
+          <DL><p>
+          </DL><p>
+      </DL><p>
+    `
+
+    const actual = parse(initial, { noEmpty: true })
+
+    const expected = {
+      items: [
+        {
+          href: 'https://tc39.es/',
+          title: 'TC39.'
+        }
+      ],
+      title: 'JavaScript'
     }
 
     deepEqual(actual, expected)

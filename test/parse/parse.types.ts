@@ -2,7 +2,7 @@ import { Bookmark, BookmarkWithId, Folder, FolderWithId, parse } from '../../ind
 
 // We check the relevance of types here via `pnpm test:types`.
 
-const bookmark: Required<Bookmark> = {
+const bookmark = {
   add_date: 1739910037000,
   last_modified: 1739910038000,
   last_visit: 1739910039000,
@@ -21,13 +21,17 @@ const bookmark: Required<Bookmark> = {
   previewsize: { w: 10, h: 10 }
 }
 
-const bookmarkWithId: Required<BookmarkWithId> = {
+bookmark satisfies Required<Bookmark>
+
+const bookmarkWithId = {
   ...bookmark,
   pid: '0',
   id: '0.0'
 }
 
-const folder: Required<Folder> = {
+bookmarkWithId satisfies Required<BookmarkWithId>
+
+const folder = {
   add_date: 1739910037000,
   last_modified: 1739910038000,
   title: 'Wiki',
@@ -44,7 +48,9 @@ const folder: Required<Folder> = {
   unfiled_bookmarks_folder: false
 }
 
-const folderWithId: Required<FolderWithId> = {
+folder satisfies Required<Folder>
+
+const folderWithId = {
   ...folder,
   items: [
     {
@@ -63,24 +69,18 @@ const folderWithId: Required<FolderWithId> = {
   id: '0.0'
 }
 
-const parser = parse('..')
-parser satisfies Folder
+folderWithId satisfies Required<FolderWithId>
 
-const parserWithId = parse('..', { withId: true })
-parserWithId satisfies Folder
-parserWithId satisfies FolderWithId
+parse('') satisfies Folder
 
-const parserWithTransform = parse('..', {
-  transform: item => {
-    if (!item.href) return
-    return ({ name: item.title, url: item.href })
-  }
-})
-parserWithTransform satisfies Folder<{ name: string, url: string }>
+parse('', { withId: true }) satisfies FolderWithId
 
-const parserWithIdent = parse('..', { transform: item => item })
-parserWithIdent satisfies Folder
+parse('', {
+  transform: ({ href }) => href ? { url: href } : undefined
+}) satisfies Folder<{ url: string }>
 
-const parserWithIdAndIdent = parse('..', { withId: true, transform: item => item })
-parserWithIdAndIdent satisfies Folder
-parserWithIdAndIdent satisfies FolderWithId
+parse('', { transform: item => item }) satisfies Folder
+
+parse('', { withId: true, transform: item => item }) satisfies FolderWithId
+
+parse('', { noEmpty: true }) satisfies Folder

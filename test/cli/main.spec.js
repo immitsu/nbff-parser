@@ -3,13 +3,13 @@ import test from 'node:test'
 
 import * as cli from '../../cli/main.js'
 
-test.describe('main', () => {
+test.describe('main function call', () => {
   test('throws error on unknown command', async () => {
     const args = ['unknown', 'files=a.html,b.html', 'output=out.html']
     await assert.rejects(() => cli.main(args), /❌ Unknown command/)
   })
 
-  test('help', () => {
+  test('help command', () => {
     const match = async cmd => {
       const message = await cli.main([cmd])
       assert.match(message, /nbff-parser – a simple parser/)
@@ -18,7 +18,7 @@ test.describe('main', () => {
     return Promise.all(['--help', '-h'].map(match))
   })
 
-  test('version', () => {
+  test('version command', () => {
     const match = async cmd => {
       const message = await cli.main([cmd])
       assert.match(message, /^v\d+\.\d+\.\d+$/)
@@ -27,7 +27,7 @@ test.describe('main', () => {
     return Promise.all(['--version', '-v'].map(match))
   })
 
-  test.describe('exclude', () => {
+  test.describe('exclude command', () => {
     test('logs result', async () => {
       const exclude = async (file, attrs, output) =>
         `excluded ${attrs} from ${file} and saved a new file ${output}`
@@ -60,7 +60,7 @@ test.describe('main', () => {
     })
   })
 
-  test.describe('merge', () => {
+  test.describe('merge command', () => {
     test('logs result', async () => {
       const merge = async (files, output) => `merged ${files} into ${output}`
 

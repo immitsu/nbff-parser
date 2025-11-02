@@ -23,7 +23,7 @@ export type FolderWithId<T = BookmarkWithId> = WithId<
   }
 >
 
-type Truthy<V> = V extends null | undefined | false | 0 | "" ? never : V
+export type Truthy<V> = V extends null | undefined | false | 0 | "" ? never : V
 
 // Overload signatures.
 export function parse<T = Bookmark>(

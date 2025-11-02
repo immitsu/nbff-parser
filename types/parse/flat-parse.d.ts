@@ -1,4 +1,4 @@
-import type { Bookmark, Folder } from './parse.d.ts'
+import type { Bookmark, Folder, Truthy } from './parse.d.ts'
 import type { AllAttrKeys } from '../attrs.d.ts'
 
 type FlatFolder = Omit<Folder, 'items'>
@@ -14,8 +14,6 @@ export type FlatBookmarkWithId = WithId<
     folder: WithId<FlatFolder>[]
   }
 >
-
-type Truthy<V> = V extends null | undefined | false | 0 | "" ? never : V
 
 // Overload signatures.
 export function flatParse<T = FlatBookmark>(

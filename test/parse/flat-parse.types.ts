@@ -2,7 +2,7 @@ import { FlatBookmark, FlatBookmarkWithId, flatParse } from '../../index.js'
 
 // We check the relevance of types here via `pnpm test:types`.
 
-const bookmark: Required<FlatBookmark> = {
+const bookmark = {
   add_date: 1739910037000,
   last_modified: 1739910038000,
   last_visit: 1739910039000,
@@ -35,7 +35,9 @@ const bookmark: Required<FlatBookmark> = {
   ]
 }
 
-const bookmarkWithId: Required<FlatBookmarkWithId> = {
+bookmark satisfies Required<FlatBookmark>
+
+const bookmarkWithId = {
   ...bookmark,
   folder: [
     {
@@ -46,24 +48,16 @@ const bookmarkWithId: Required<FlatBookmarkWithId> = {
   id: 0
 }
 
-const parser = flatParse('..')
-parser satisfies FlatBookmark[]
+bookmarkWithId satisfies Required<FlatBookmarkWithId>
 
-const parserWithId = flatParse('..', { withId: true })
-parserWithId satisfies FlatBookmark[]
-parserWithId satisfies FlatBookmarkWithId[]
+flatParse('') satisfies FlatBookmark[]
 
-const parserWithTransform = flatParse('..', {
-  transform: item => {
-    if (!item.href) return
-    return ({ name: item.title, url: item.href })
-  }
-})
-parserWithTransform satisfies { name: string, url: string }[]
+flatParse('', { withId: true }) satisfies FlatBookmarkWithId[]
 
-const parserWithIdent = flatParse('..', { transform: item => item })
-parserWithIdent satisfies FlatBookmark[]
+flatParse('', {
+  transform: ({ href }) => href ? { url: href } : undefined
+}) satisfies { url: string }[]
 
-const parserWithIdAndIdent = flatParse('..', { withId: true, transform: item => item })
-parserWithIdAndIdent satisfies FlatBookmark[]
-parserWithIdAndIdent satisfies FlatBookmarkWithId[]
+flatParse('', { transform: item => item }) satisfies FlatBookmark[]
+
+flatParse('', { withId: true, transform: item => item }) satisfies FlatBookmarkWithId[]

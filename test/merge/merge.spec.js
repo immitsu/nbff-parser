@@ -5,7 +5,7 @@ import { merge } from '../../index.js'
 import { readFile } from '../read-file.js'
 
 describe('merge', () => {
-  test('read html files', () => {
+  test('read and merge actual files', () => {
     const readHTML = name => readFile(`./merge/${name}.html`)
     const [a, b, c, expected] = ['a', 'b', 'c', 'expected'].map(readHTML)
     const actual = merge(a, b, c)
@@ -13,7 +13,7 @@ describe('merge', () => {
   })
 
   describe('splice bookmarks', () => {
-    test('identical', () => {
+    test('identical items', () => {
       const a = `
         <H1>Bookmarks</H1>
         <DL><p>
@@ -28,6 +28,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 
@@ -49,6 +50,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DT><A HREF="https://bar.com">Foo</A>\n</DL><p>'
 
@@ -71,6 +73,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
@@ -93,6 +96,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
@@ -116,6 +120,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Description.\n</DL><p>'
 
@@ -139,6 +144,7 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
         '<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Foo\n    <DT><A HREF="https://foo.com">Foo</A>\n    <DD>Bar\n</DL><p>'
 
@@ -149,8 +155,8 @@ describe('merge', () => {
   describe('splice folders', () => {
     test('use <H1> of the first argument', () => {
       const a = `
-        <TITLE>MyBookmarks</TITLE>
-        <H1>MyBookmarks</H1>
+        <TITLE>My_Bookmarks</TITLE>
+        <H1>My_Bookmarks</H1>
         <DL><p>
           <DT><A HREF="https://foo.com">Foo</A>
         </DL><p>
@@ -163,8 +169,9 @@ describe('merge', () => {
       `
 
       const actual = merge(a, b)
+
       const expected =
-        '<TITLE>Bookmarks</TITLE>\n<H1>MyBookmarks</H1>\n<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
+        '<TITLE>Bookmarks</TITLE>\n<H1>My_Bookmarks</H1>\n<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 
       ok(actual.includes(expected))
     })
@@ -172,6 +179,7 @@ describe('merge', () => {
 
   test('no arguments', () => {
     const actual = merge()
+
     const expected = '<H1>Bookmarks</H1>\n<DL><p>\n</DL><p>'
 
     ok(actual.includes(expected))
@@ -185,6 +193,7 @@ describe('merge', () => {
       </DL><p>
     `
     const actual = merge(a)
+
     const expected =
       '<H1>Bookmarks</H1>\n<DL><p>\n    <DT><A HREF="https://foo.com">Foo</A>\n</DL><p>'
 

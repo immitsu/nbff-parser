@@ -17,7 +17,7 @@ test.afterEach(() => {
   fs.writeFile = originalWriteFile
 })
 
-const mockFiles = {
+const mockedFiles = {
   'bar.html': `
     <TITLE>MyBookmarks</TITLE>
     <H1>MyBookmarks</H1>
@@ -43,7 +43,7 @@ const mockFiles = {
 
 const mockFileSystem = () => {
   fs.readFile = async path => {
-    if (mockFiles[path]) return mockFiles[path]
+    if (mockedFiles[path]) return mockedFiles[path]
     throw new Error(`File not found: ${path}`)
   }
 
@@ -67,7 +67,7 @@ const mockFileSystem = () => {
   }
 }
 
-test.describe('exclude', () => {
+test.describe('exclude command', () => {
   test('rejects input file that is not .html', async () => {
     await assert.rejects(
       () => exclude('invalid.txt', ['attr']),
@@ -131,7 +131,7 @@ test.describe('exclude', () => {
   })
 })
 
-test.describe('merge', () => {
+test.describe('merge command', () => {
   test('rejects input files that are not .html', async () => {
     await assert.rejects(
       () => merge(['a.html', 'b.txt'], 'out.html'),

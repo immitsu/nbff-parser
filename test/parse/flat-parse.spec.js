@@ -6,7 +6,7 @@ import * as fragments from '../fragments.js'
 import { readFile } from '../read-file.js'
 
 describe('flat-parse', () => {
-  describe('folder from `../fragments.js`', () => {
+  describe('from `../fragments.js`', () => {
     const expected = [
       {
         add_date: 1739910037000,
@@ -37,51 +37,48 @@ describe('flat-parse', () => {
     ]
 
     test('default', () => {
-      const actual = flatParse(fragments.folder)
+      const actual = flatParse(fragments.completeFolder)
 
       deepEqual(actual, expected)
     })
 
-    test('with excluded attrs', () => {
+    test('exclude attributes', () => {
       const excludeAttrs = ['personal_toolbar_folder']
 
-      const actual = flatParse(fragments.folder, { excludeAttrs })
+      const actual = flatParse(fragments.completeFolder, { excludeAttrs })
 
       const bookmark = expected[0]
       // eslint-disable-next-line no-unused-vars
       const { personal_toolbar_folder, ...newFolder } = bookmark.folder[0]
-      const expectedWithExcludedAttrs = [{ ...bookmark, folder: [newFolder] }]
 
-      deepEqual(actual, expectedWithExcludedAttrs)
+      const newExpected = [{ ...bookmark, folder: [newFolder] }]
+
+      deepEqual(actual, newExpected)
     })
 
     test('single quotes', () => {
-      const initial = fragments.folder.replaceAll('"', "'")
+      const initial = fragments.completeFolder.replaceAll('"', "'")
+
       const actual = flatParse(initial)
 
       deepEqual(actual, expected)
     })
 
     test('without last </DL>', () => {
-      const initial = fragments.folder.replace('</DL><p>', '')
+      const initial = fragments.completeFolder.replace(/<\/DL><p>$/, '')
+
       const actual = flatParse(initial)
 
       deepEqual(actual, expected)
     })
-  })
 
-  test('empty fragment', () => {
-    const initial = `
-      <H1>Bookmarks</H1>
-      <DL><p>
-      </DL><p>
-    `
+    test('empty file', () => {
+      const actual = flatParse(fragments.emptyFile)
 
-    const actual = flatParse(initial)
+      const expected = []
 
-    const expected = []
-
-    deepEqual(actual, expected)
+      deepEqual(actual, expected)
+    })
   })
 
   test('skip empty folder', () => {
@@ -128,7 +125,7 @@ describe('flat-parse', () => {
     deepEqual(actual, expected)
   })
 
-  test('without closing </DL> at all', () => {
+  test('incomplete structure', () => {
     const initial = `
       <DT><H3>Folder1</H3>
       <DL><p>
@@ -185,7 +182,7 @@ describe('flat-parse', () => {
     deepEqual(actual, expected)
   })
 
-  test('with transform', () => {
+  test('transform', () => {
     const initial = `
       <DT><H3>JavaScript</H3>
       <DL><p>

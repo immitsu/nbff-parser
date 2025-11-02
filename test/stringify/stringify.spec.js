@@ -5,7 +5,7 @@ import { parse, stringify } from '../../index.js'
 import { readFile } from '../read-file.js'
 
 describe('stringify', () => {
-  test('read html files', () => {
+  test('read and parse actual files', () => {
     ;['./bookmarks-1.html', './bookmarks-2.html'].forEach(file => {
       const initial = readFile(file)
       const parsed = parse(initial)
