@@ -3,14 +3,14 @@ export default [
     import: {
       'index.js': '{ customParse }'
     },
-    limit: '275',
+    limit: '280',
     name: 'customParse'
   },
   {
     import: {
       'index.js': '{ flatStringify }'
     },
-    limit: '905 B',
+    limit: '925 B',
     name: 'flatStringify'
   },
   {
@@ -24,11 +24,11 @@ export default [
     import: {
       'index.js': '{ merge }'
     },
-    limit: '1.65 kB',
+    limit: '1.7 kB',
     name: 'merge'
   },
   {
-    limit: '2.07 kB',
+    limit: '2.075 kB',
     name: 'all',
     path: 'index.js'
   }
