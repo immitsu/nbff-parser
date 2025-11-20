@@ -14,3 +14,4 @@ export {
 export { customParse } from './types/parse/custom-parse.js'
 export { stringify } from './types/stringify/stringify.js'
 export { flatStringify } from './types/stringify/flat-stringify.js'
+export { AllAttrKeys, BookmarkAttrs, FolderAttrs } from './types/attrs.js'
