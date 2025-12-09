@@ -1,25 +1,26 @@
 import { exclude, merge } from './commands.js'
 import { EXCLUDE, HELP, MERGE, VERSION } from './messages.js'
 
-const createSuccessMessage = message => {
+const printSuccess = message => {
   return `✅ ${message.trim()}`
 }
-const throwErrorMessage = error => {
+
+const throwError = error => {
   const message = error instanceof Error ? error.message : error
   throw new Error(`❌ ${message.trim()}`)
 }
 
-const splitCommaSeparatedStr = str =>
+const splitStrBySeparator = (str, separator = ',') =>
   str
-    .split(',')
+    .split(separator)
     .map(s => s.trim())
     .filter(Boolean)
 
 export const main = async (args, cmds = { exclude, merge }) => {
-  const [command, ...rawParams] = args
+  const [command, ...restArgs] = args
 
-  const params = rawParams.reduce((acc, arg) => {
-    const [k, v] = arg.split('=').map(p => p.trim())
+  const params = restArgs.reduce((acc, arg) => {
+    const [k, v] = splitStrBySeparator(arg, '=')
     v && (acc[k] = v.replace(/^["']|["']$/g, ''))
     return acc
   }, {})
@@ -35,28 +36,28 @@ export const main = async (args, cmds = { exclude, merge }) => {
 
     case 'exclude': {
       const { attrs, file, output } = params
-      if (!file || !attrs) {
-        throwErrorMessage(EXCLUDE)
+      if (!attrs || !file || !attrs) {
+        throwError(EXCLUDE)
       }
       return cmds
-        .exclude(file, splitCommaSeparatedStr(attrs), output)
-        .then(createSuccessMessage)
-        .catch(throwErrorMessage)
+        .exclude(file, splitStrBySeparator(attrs), output)
+        .then(printSuccess)
+        .catch(throwError)
     }
 
     case 'merge': {
       const { files, output } = params
       if (!files || !output) {
-        throwErrorMessage(MERGE)
+        throwError(MERGE)
       }
       return cmds
-        .merge(splitCommaSeparatedStr(files), output)
-        .then(createSuccessMessage)
-        .catch(throwErrorMessage)
+        .merge(splitStrBySeparator(files), output)
+        .then(printSuccess)
+        .catch(throwError)
     }
 
     default: {
-      throwErrorMessage(`Unknown command: ${command}`)
+      throwError(`Unknown command: ${command}`)
     }
   }
 }
