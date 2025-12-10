@@ -45,7 +45,6 @@ describe('parse', () => {
 
       const actual = parse(fragments.completeFolder, { excludeAttrs })
 
-      // eslint-disable-next-line no-unused-vars
       const { personal_toolbar_folder, ...newExpected } = expected
 
       deepEqual(actual, newExpected)

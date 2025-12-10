@@ -48,7 +48,6 @@ describe('flat-parse', () => {
       const actual = flatParse(fragments.completeFolder, { excludeAttrs })
 
       const bookmark = expected[0]
-      // eslint-disable-next-line no-unused-vars
       const { personal_toolbar_folder, ...newFolder } = bookmark.folder[0]
 
       const newExpected = [{ ...bookmark, folder: [newFolder] }]
